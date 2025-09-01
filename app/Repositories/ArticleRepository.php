@@ -14,27 +14,23 @@ class ArticleRepository implements ArticleRepositoryInterface
         $this->article = new Article();
     }
 
-    public function find(Portal $portal, string $slug): ?Article
+    public function create(Portal $portal, string $url, array $data): Article
     {
-        return $this->article->where('portal_id', $portal->id)->where('slug', $slug)->first();
-    }
-
-    public function create(Portal $portal, string $slug): Article
-    {
-        return $this->article->create([
+        $row = array_merge([
             'portal_id' => $portal->id,
-            'slug' => $slug,
-            'original_url' => '',
-            'title' => '',
-            'author' => '',
-            'main_image' => '',
-            'lead' => '',
-            'published_at' => null,
-        ]);
+            'url' => $url,
+            'hash' => md5($url),
+        ], $data);
+        return $this->article->create($row);
     }
 
     public function getById(int $id): ?Article
     {
         return $this->article->find($id);
+    }
+
+    public function getByUrl(string $url): ?Article
+    {
+        return $this->article->where('hash', md5($url))->where('url', $url)->first();
     }
 }

@@ -17,9 +17,9 @@ return new class extends Migration
             $table->unsignedBigInteger('portal_id');
             $table->foreign('portal_id')->references('id')->on('portals');
 
-            $table->string('slug');
+            $table->string('hash', 32);
+            $table->string('url');
             $table->string('title');
-            $table->string('original_url');
             $table->dateTime('published_at')->nullable();
             $table->string('author')->nullable();
             $table->string('main_image_src')->nullable();

@@ -29,4 +29,9 @@ class PortalRepository implements PortalRepositoryInterface
          }
          return $portal;
     }
+
+    public function getByName(string $portal): ?Portal
+    {
+        return $this->portal->where('name', $portal)->first();
+    }
 }

@@ -8,9 +8,9 @@ class Article extends Model
 {
     protected $fillable = [
         'portal_id',
+        'url',
+        'hash',
         'title',
-        'slug',
-        'original_url',
         'lead',
         'author',
         'main_image_src',
