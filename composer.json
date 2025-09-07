@@ -14,8 +14,8 @@
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "laravel/wayfinder": "^0.1.9",
-        "istvanmolitor/article-parser": "^1.0.0",
-        "istvanmolitor/html-parser": "^1.0.0"
+        "istvanmolitor/article-parser": "^1.1.0",
+        "istvanmolitor/html-parser": "^1.1.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

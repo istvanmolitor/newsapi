@@ -11,6 +11,8 @@ Route::get('/', function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+
+    Route::get('article/{article}', [\App\Http\Controllers\ArticleController::class, 'show'])->name('article.show');
 //});
 
 require __DIR__.'/settings.php';

@@ -26,8 +26,8 @@ class Article extends Model
         return $this->belongsTo(Portal::class);
     }
 
-    public function articleElements()
+    public function articleContentElements()
     {
-        return $this->hasMany(ArticleElement::class);
+        return $this->hasMany(ArticleContentElement::class);
     }
 }
