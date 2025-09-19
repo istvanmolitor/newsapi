@@ -1,11 +1,14 @@
 <?php
 
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\KeywordController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // Cikkek listázása
 Route::get('/', [ArticleController::class, 'index'])->name('article.index');
+Route::get('keywords', [KeywordController::class, 'index'])->name('keyword.index');
+Route::get('keyword/{keyword}', [KeywordController::class, 'show'])->name('keyword.show');
 
 //Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
