@@ -15,6 +15,7 @@ class ArticleController extends Controller
             $articleService = app(ArticleService::class);
             $articleService->setArticle($article);
             $articleService->scrapeArticle();
+            $article = Article::find($article->id);
         }
 
         return view('article.show', [

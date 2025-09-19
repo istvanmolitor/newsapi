@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\ArticleContentElementType;
 use App\Models\Portal;
+use App\Repositories\KeywordRepositoryInterface;
 use App\Repositories\PortalRepositoryInterface;
 use App\Repositories\ArticleContentElementRepositoryInterface;
 use App\Repositories\ArticleRepositoryInterface;
@@ -39,7 +40,8 @@ class ArticleService
         private ArticleParserService $articleParserService,
         private PortalRepositoryInterface $portalRepository,
         private ArticleRepositoryInterface $articleRepository,
-        private ArticleContentElementRepositoryInterface $articleContentElementRepository
+        private ArticleContentElementRepositoryInterface $articleContentElementRepository,
+        private KeywordRepositoryInterface $keywordRepository
     )
     {
     }
@@ -195,6 +197,8 @@ class ArticleService
             'updated_at' => now(),
         ]);
         $this->article->save();
+
+        $this->keywordRepository->attachKeywordsToArticle($this->article, $articleObject->keywords);
 
         $articleContentElements = $this->article->articleContentElements;
 

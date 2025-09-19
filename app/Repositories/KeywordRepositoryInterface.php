@@ -14,4 +14,12 @@ interface KeywordRepositoryInterface
     public function getByKeyword(string $keyword): ?Keyword;
 
     public function attachToArticle(Article $article, Keyword $keyword): void;
+
+    /**
+     * Attach multiple string keywords to an article (creates keywords if missing).
+     *
+     * @param Article $article
+     * @param string[] $keywords
+     */
+    public function attachKeywordsToArticle(Article $article, array $keywords): void;
 }

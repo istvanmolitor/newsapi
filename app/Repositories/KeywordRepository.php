@@ -35,4 +35,43 @@ class KeywordRepository implements KeywordRepositoryInterface
     {
         $article->keywords()->syncWithoutDetaching([$keyword->id]);
     }
+
+    /**
+     * Attach multiple string keywords to an article (creates keywords if missing).
+     *
+     * @param Article $article
+     * @param string[] $keywords
+     */
+    public function attachKeywordsToArticle(Article $article, array $keywords): void
+    {
+        // Normalize: trim, remove empties, lowercase (optional based on domain), unique
+        $normalized = [];
+        foreach ($keywords as $kw) {
+            if (!is_string($kw)) {
+                continue;
+            }
+            $k = trim($kw);
+            if ($k === '') {
+                continue;
+            }
+            $normalized[] = $k;
+        }
+        if (empty($normalized)) {
+            return;
+        }
+        $normalized = array_values(array_unique($normalized));
+
+        $ids = [];
+        foreach ($normalized as $kw) {
+            $existing = $this->getByKeyword($kw);
+            if (!$existing) {
+                $existing = $this->create($kw);
+            }
+            $ids[] = $existing->id;
+        }
+
+        if (!empty($ids)) {
+            $article->keywords()->syncWithoutDetaching($ids);
+        }
+    }
 }
