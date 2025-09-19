@@ -116,7 +116,7 @@
 
             <a href="{{ route('article.index') }}" class="text-sm/6 font-semibold text-gray-900">Cikkek</a>
             <a href="{{ route('keyword.index') }}" class="text-sm/6 font-semibold text-gray-900">Kulcsszavak</a>
-            <a href="#" class="text-sm/6 font-semibold text-gray-900">Company</a>
+            <a href="{{ route('calendar.index') }}" class="text-sm/6 font-semibold text-gray-900">Naptár</a>
         </el-popover-group>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
             <a href="#" class="text-sm/6 font-semibold text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\KeywordController;
+use App\Http\Controllers\CalendarController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -9,6 +10,9 @@ use Inertia\Inertia;
 Route::get('/', [ArticleController::class, 'index'])->name('article.index');
 Route::get('keywords', [KeywordController::class, 'index'])->name('keyword.index');
 Route::get('keyword/{keyword}', [KeywordController::class, 'show'])->name('keyword.show');
+
+// Egyszerű naptár
+Route::get('calendar', [CalendarController::class, 'index'])->name('calendar.index');
 
 //Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
