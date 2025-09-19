@@ -27,7 +27,7 @@
                 /** @var \Carbon\Carbon $date */
                 $date = $d['date'];
             @endphp
-            <a href="{{ request()->fullUrlWithQuery(['year' => $date->year, 'month' => $date->month, 'day' => $date->day]) }}"
+            <a href="{{ route('calendar.day', $date->format('Y-m-d')) }}"
                class="block rounded border p-3 text-center transition
                     {{ $d['isCurrentMonth'] ? 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700' : 'bg-slate-50 dark:bg-slate-900/40 border-slate-100 dark:border-slate-800 text-slate-400' }}
                     {{ $d['isToday'] ? 'ring-2 ring-indigo-500' : '' }}">

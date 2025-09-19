@@ -13,6 +13,9 @@ Route::get('keyword/{keyword}', [KeywordController::class, 'show'])->name('keywo
 
 // Egyszerű naptár
 Route::get('calendar', [CalendarController::class, 'index'])->name('calendar.index');
+Route::get('calendar/day/{date}', [CalendarController::class, 'day'])
+    ->where('date', '\\d{4}-\\d{2}-\\d{2}')
+    ->name('calendar.day');
 
 //Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
