@@ -30,4 +30,9 @@ class Article extends Model
     {
         return $this->hasMany(ArticleContentElement::class);
     }
+
+    public function keywords()
+    {
+        return $this->belongsToMany(Keyword::class, 'article_keyword');
+    }
 }
