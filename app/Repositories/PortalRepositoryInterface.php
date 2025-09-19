@@ -6,7 +6,7 @@ use App\Models\Portal;
 
 interface PortalRepositoryInterface
 {
-    public function create(string $name, string $domain): Portal;
+    public function create(string $name, string $domain, string $rss): Portal;
 
     public function getByDomain(string $domain): Portal;
 

@@ -6,36 +6,36 @@ use App\Services\ArticleService;
 use Exception;
 use Illuminate\Console\Command;
 
-class UpdateArticleCommand extends Command
+class UpdateRssCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'article:scrape {url}';
+    protected $signature = 'rss:update {name}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Update RSS feed';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $url = $this->argument('url');
+        $name = $this->argument('name');
 
         /** @var ArticleService $service */
         $service = app(ArticleService::class);
 
         try {
-            $service->scrapeByUrl($url);
+            $service->updateRss($name);
         }
-        catch(Exception $e) {
+        catch (Exception $e) {
             $this->error($e->getMessage());
             return self::FAILURE;
         }

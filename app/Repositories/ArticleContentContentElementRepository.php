@@ -15,22 +15,6 @@ class ArticleContentContentElementRepository implements ArticleContentElementRep
         $this->articleElement = new ArticleContentElement();
     }
 
-    protected function makeStringContent(ArticleContentElementType $type, string|array $content): string
-    {
-        return match ($type) {
-            ArticleContentElementType::Paragraph, ArticleContentElementType::Quote => $content,
-            default => json_encode($content),
-        };
-    }
-
-    public function getContent(ArticleContentElement $articleContentElement): string|array
-    {
-        return match ($articleContentElement->type) {
-            ArticleContentElementType::Paragraph, ArticleContentElementType::Quote => $articleContentElement->content,
-            default => json_decode($articleContentElement->content),
-        };
-    }
-
     public function create(
         Article $article,
         ArticleContentElementType $type,
@@ -40,7 +24,7 @@ class ArticleContentContentElementRepository implements ArticleContentElementRep
         return $this->articleElement->create([
             'article_id' => $article->id,
             'type' => $type,
-            'content' => $this->makeStringContent($type, $content),
+            'content' => $content,
         ]);
     }
 
@@ -52,7 +36,7 @@ class ArticleContentContentElementRepository implements ArticleContentElementRep
     {
         $articleContentElement->fill([
             'type' => $type,
-            'content' => $this->makeStringContent($type, $content),
+            'content' => $content,
         ]);
         $articleContentElement->save();
     }

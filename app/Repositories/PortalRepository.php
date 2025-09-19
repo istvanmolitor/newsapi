@@ -13,11 +13,12 @@ class PortalRepository implements PortalRepositoryInterface
         $this->portal = new Portal();
     }
 
-    public function create(string $name, string $domain): Portal
+    public function create(string $name, string $domain, string $rss): Portal
     {
         return $this->portal->create([
             'name' => $name,
             'domain' => $domain,
+            'rss' => $rss,
         ]);
     }
 

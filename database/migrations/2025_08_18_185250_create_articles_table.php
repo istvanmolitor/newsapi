@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('main_image_author')->nullable();
             $table->text('lead')->nullable();
 
+            $table->dateTime('scraped_at')->nullable();
             $table->timestamps();
         });
     }

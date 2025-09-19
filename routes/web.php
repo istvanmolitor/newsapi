@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -12,7 +13,7 @@ Route::get('/', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
 
-    Route::get('article/{article}', [\App\Http\Controllers\ArticleController::class, 'show'])->name('article.show');
+    Route::get('article/{article}', [ArticleController::class, 'show'])->name('article.show');
 //});
 
 require __DIR__.'/settings.php';

@@ -16,7 +16,7 @@ class Article extends Model
         'main_image_src',
         'main_image_alt',
         'main_image_author',
-        'content',
+        'scraped_at',
         'created_at',
         'updated_at',
     ];
