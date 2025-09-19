@@ -4,12 +4,8 @@ use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('welcome');
-})->name('home');
-
 // Cikkek listázása
-Route::get('articles', [ArticleController::class, 'index'])->name('article.index');
+Route::get('/', [ArticleController::class, 'index'])->name('article.index');
 
 //Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
