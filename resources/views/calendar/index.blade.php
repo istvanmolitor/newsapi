@@ -6,6 +6,10 @@
 
 @section('content')
     <div class="flex items-center justify-between mb-4">
+        <a href="{{ route('calendar.index') }}" class="px-3 py-2 rounded border border-indigo-200 text-indigo-700 bg-indigo-50 hover:bg-indigo-100 dark:border-indigo-700/50 dark:text-indigo-300 dark:bg-indigo-900/30">Ugrás az aktuális hónapra</a>
+        <div class="flex-1"></div>
+    </div>
+    <div class="flex items-center justify-between mb-4">
         <a href="{{ route('calendar.index', ['year' => $prevYear, 'month' => $prevMonth]) }}" class="px-3 py-2 rounded border border-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700">&larr; Előző hónap</a>
         <div class="text-xl font-semibold">{{ $year }}. {{ ucfirst($monthName) }}</div>
         <a href="{{ route('calendar.index', ['year' => $nextYear, 'month' => $nextMonth]) }}" class="px-3 py-2 rounded border border-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700">Következő hónap &rarr;</a>
