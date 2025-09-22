@@ -26,6 +26,12 @@
                         </time>
                     </span>
                 @endif
+                <span class="inline-flex items-center gap-1">
+                    <span class="font-medium">Rögzítve:</span>
+                    <time datetime="{{ \Carbon\Carbon::parse($article->created_at)->toIso8601String() }}">
+                        {{ \Carbon\Carbon::parse($article->created_at)->format('Y.m.d H:i') }}
+                    </time>
+                </span>
             </div>
         </header>
 

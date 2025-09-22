@@ -22,10 +22,19 @@
                     @endif
                     <div class="mt-3 text-xs text-muted-foreground">
                         @if(!empty($article->published_at))
-                            <time datetime="{{ \Carbon\Carbon::parse($article->published_at)->toIso8601String() }}">
-                                {{ \Carbon\Carbon::parse($article->published_at)->format('Y.m.d H:i') }}
-                            </time>
+                            <span class="inline-flex items-center gap-1">
+                                <span class="font-medium">Megjelenés:</span>
+                                <time datetime="{{ \Carbon\Carbon::parse($article->published_at)->toIso8601String() }}">
+                                    {{ \Carbon\Carbon::parse($article->published_at)->format('Y.m.d H:i') }}
+                                </time>
+                            </span>
                         @endif
+                        <span class="inline-flex items-center gap-1 {{ empty($article->published_at) ? '' : 'ml-3' }}">
+                            <span class="font-medium">Rögzítve:</span>
+                            <time datetime="{{ \Carbon\Carbon::parse($article->created_at)->toIso8601String() }}">
+                                {{ \Carbon\Carbon::parse($article->created_at)->format('Y.m.d H:i') }}
+                            </time>
+                        </span>
                     </div>
                     <div class="mt-4">
                         <a href="{{ route('article.show', $article) }}" class="inline-flex items-center gap-2 text-sm bg-secondary text-secondary-foreground px-3 py-1.5 rounded-md border hover:bg-accent">
