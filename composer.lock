@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b201501a1a7511ea2c8125fb84180731",
+    "content-hash": "475952761871ebecc8aa9cd25b1f3205",
     "packages": [
         {
             "name": "brick/math",
@@ -1207,6 +1207,48 @@
                 "issues": "https://github.com/istvanmolitor/html-parser/issues"
             },
             "time": "2025-09-22T08:30:10+00:00"
+        },
+        {
+            "name": "istvanmolitor/rss-watcher",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/istvanmolitor/rss-watcher.git",
+                "reference": "04820c2358b8d999a72a085e1726f56448ac8322"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/istvanmolitor/rss-watcher/zipball/04820c2358b8d999a72a085e1726f56448ac8322",
+                "reference": "04820c2358b8d999a72a085e1726f56448ac8322",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^10.0|^11.0|^12.0",
+                "php": ">=8.1",
+                "willvincent/feeds": "^2.7|^3.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Molitor\\RssWatcher\\Providers\\RssWatcherServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Molitor\\RssWatcher\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "RSS feed watcher for Laravel",
+            "support": {
+                "source": "https://github.com/istvanmolitor/rss-watcher/tree/v1.0.1",
+                "issues": "https://github.com/istvanmolitor/rss-watcher/issues"
+            },
+            "time": "2025-09-23T06:28:47+00:00"
         },
         {
             "name": "laravel/framework",

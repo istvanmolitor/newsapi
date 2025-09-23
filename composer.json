@@ -16,7 +16,8 @@
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "laravel/wayfinder": "^0.1.9",
-        "willvincent/feeds": "^2.7"
+        "willvincent/feeds": "^2.7",
+        "istvanmolitor/rss-watcher": "^1.0.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -94,6 +95,10 @@
         "html-parser": {
             "type": "vcs",
             "url": "git@github.com:istvanmolitor/html-parser.git"
+        },
+        "rss-watcher": {
+            "type": "vcs",
+            "url": "git@github.com:istvanmolitor/rss-watcher.git"
         }
     }
 }
