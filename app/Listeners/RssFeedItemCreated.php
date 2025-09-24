@@ -17,13 +17,16 @@ class RssFeedItemCreated
         /** @var ArticleService $articleService */
         $articleService = app(ArticleService::class);
 
-        $url = $event->item->url;
+        $url = $event->item->link;
+        if(!$url) return;
 
         try {
-            $articleService->setArticleByUrl($url);
+            $articleService->selectPortalByUrl($url);
         }
         catch (Exception $e) {
-            $articleService->createPortal();
+            $articleService->createPortalByUrl($url);
         }
+
+        $articleService->save($url, $event->item->title, $event->item->description, $event->item->published_at);
     }
 }

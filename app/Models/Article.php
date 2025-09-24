@@ -16,9 +16,8 @@ class Article extends Model
         'main_image_src',
         'main_image_alt',
         'main_image_author',
+        'published_at',
         'scraped_at',
-        'created_at',
-        'updated_at',
     ];
 
     public function portal()

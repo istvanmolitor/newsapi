@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Services\ArticleService;
+use Exception;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -29,9 +30,12 @@ class ArticleController extends Controller
         if($article->scraped_at === null || $request->has('refresh')) {
             /** @var ArticleService $articleService */
             $articleService = app(ArticleService::class);
-            $articleService->setArticle($article);
-            $articleService->scrapeArticle();
-            $article = Article::find($article->id);
+            $articleService->selectArticle($article);
+            try {
+                $articleService->scrapeArticle();
+                $article = Article::find($article->id);
+            }
+            catch(Exception $e) {}
         }
 
         return view('article.show', [

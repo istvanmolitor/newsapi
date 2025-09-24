@@ -49,7 +49,7 @@ class ArticleService
         return parse_url($url, PHP_URL_SCHEME) . '://' . parse_url($url, PHP_URL_HOST);
     }
 
-    public function setPortalByName(string $name): void
+    public function selectPortalByName(string $name): void
     {
         $portalModel = $this->portalRepository->getByName($name);
         if(!$portalModel) {
@@ -58,7 +58,7 @@ class ArticleService
         $this->portal = $portalModel;
     }
 
-    public function setPortalByUrl(string $url): void
+    public function selectPortalByUrl(string $url): void
     {
         $domain = $this->urlToDomain($url);
         $portalModel = $this->portalRepository->getByDomain($domain);
@@ -68,49 +68,48 @@ class ArticleService
         $this->portal = $portalModel;
     }
 
-    public function createPortal(string $url): void
+    public function createPortalByUrl(string $url): void
     {
         $domain = $this->urlToDomain($url);
         $this->portal = $this->portalRepository->create($domain, $domain);
     }
 
-    public function setArticle(Article $article): void
+    public function selectArticle(Article $article): void
     {
         $this->portal = $article->portal;
         $this->article = $article;
     }
 
-    public function setArticleByUrl(string $url): void
+    public function selectArticleByUrl(string $url): void
     {
         $article = $this->articleRepository->getByUrl($url);
         if(!$article) {
-            throw new Exception('The article is not found');
+            throw new Exception('The article url is not found');
         }
-        $this->setArticle($article);
+        $this->selectArticle($article);
     }
 
-    protected function save(
+    public function save(
         string $url,
         string $title,
         string $lead,
-        ?string $createdAt
+        string $publishedAt
     ): void
     {
         $data = [
             'title' => $title,
             'lead' => $lead,
-            'created_at' => $createdAt,
-            'updated_at' => now(),
+            'published_at' => $publishedAt,
         ];
 
         try {
-            $this->setArticleByUrl($url);
+            $this->selectArticleByUrl($url);
             $this->article->fill($data);
             $this->article->save();
         }
         catch (Exception $e) {
             if($this->portal === null) {
-                throw new Exception('Portal is not set');
+                throw new Exception('The portal is not selected.');
             }
             $this->article = $this->articleRepository->create($this->portal, $url, $data);
         }
@@ -119,7 +118,7 @@ class ArticleService
     public function saveMainImage(string $url, string $alt, string $author): void
     {
         if($this->article === null) {
-            throw new Exception('Article is not set');
+            throw new Exception('The article is not selected.');
         }
         $this->article->fill([
             'main_image_src' => $url,
@@ -135,43 +134,41 @@ class ArticleService
          if(!$article) {
              throw new Exception('Article is not found');
          }
-         $this->setArticle($article);
-         $this->scrapeArticle($article);
+         $this->selectArticle($article);
+         $this->scrapeArticle();
     }
 
-    public function fillArticle () {
+    public function fillArticle (): bool {
         if($this->article === null) {
-            throw new Exception('Cannot fill article. Article is not set');
+            throw new Exception('Cannot fill article becouse the article is not selected.');
         }
-        if(!$this->article->scraped_at) {
-            $this->scrapeArticle();
-            $this->article->scraped_at = now();
-            $this->article->save();
+        if($this->article->scraped_at) {
+            return false;
         }
+        $this->scrapeArticle();
+        $this->article->scraped_at = now();
+        $this->article->save();
+        return true;
     }
 
     public function scrapeByUrl(string $url): void
     {
-        try {
-            $this->setArticleByUrl($url);
-        }
-        catch (Exception $e) {
-            $this->save($url, '', '', '');
-        }
-
+        $this->selectArticleByUrl($url);
         $this->scrapeArticle();
     }
 
     public function scrapeArticle(): bool
     {
         if($this->article === null) {
-            throw new Exception('Cannot scrape article. Article is not set');
+            throw new Exception('Cannot scrape article. Article is not selected');
         }
 
         $articleObject = $this->articleParserService->getByUrl($this->article->url);
 
         if(!$articleObject) {
-            throw new Exception('Canant scrape article. Remote article is not valid');
+            $this->article->scraped_at = now();
+            $this->article->save();
+            throw new Exception('Canant scrape article. Remote article is not valid. : ' . $this->article->url);
         }
 
         $this->article->fill([
