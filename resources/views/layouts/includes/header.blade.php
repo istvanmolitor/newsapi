@@ -18,6 +18,7 @@
             <a href="{{ route('article.index') }}" class="text-sm/6 font-semibold text-gray-900">Cikkek</a>
             <a href="{{ route('keyword.index') }}" class="text-sm/6 font-semibold text-gray-900">Kulcsszavak</a>
             <a href="{{ route('calendar.index') }}" class="text-sm/6 font-semibold text-gray-900">Naptár</a>
+            <a href="{{ route('portal.index') }}" class="text-sm/6 font-semibold text-gray-900">Portálok</a>
         </el-popover-group>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
             <a href="#" class="text-sm/6 font-semibold text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
@@ -45,6 +46,7 @@
                                 <a href="{{ route('article.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Cikkek</a>
                                 <a href="{{ route('keyword.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Kulcsszavak</a>
                                 <a href="{{ route('calendar.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Naptár</a>
+                                <a href="{{ route('portal.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Portálok</a>
                             </div>
                             <div class="py-6">
                                 <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Log in</a>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\PortalController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -10,6 +11,10 @@ use Inertia\Inertia;
 Route::get('/', [ArticleController::class, 'index'])->name('article.index');
 Route::get('keywords', [KeywordController::class, 'index'])->name('keyword.index');
 Route::get('keyword/{keyword}', [KeywordController::class, 'show'])->name('keyword.show');
+
+// Portálok
+Route::get('portals', [PortalController::class, 'index'])->name('portal.index');
+Route::get('portals/{portal}', [PortalController::class, 'show'])->name('portal.show');
 
 // Egyszerű naptár
 Route::get('calendar', [CalendarController::class, 'index'])->name('calendar.index');

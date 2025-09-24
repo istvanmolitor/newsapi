@@ -6,6 +6,11 @@
 
 @section('content')
     <header class="mb-6">
+
+        <span class="inline-flex items-center gap-1">
+            <span class="font-medium"><a href="{{ route('portal.show', $article->portal) }}">{{ $article->portal }}</a></span>
+        </span>
+
         @if(!empty($article->lead))
             <p class="mt-3 text-muted-foreground">{{ $article->lead }}</p>
         @endif
@@ -39,9 +44,6 @@
             </figure>
         @endif
 
-        <span class="inline-flex items-center gap-1">
-            <span class="font-medium"><a href="{{ $article->portal->domain }}" target="_blank">{{ $article->portal }}</a></span>
-        </span>
         <x-keywords :keywords="$article->keywords"></x-keywords>
     </header>
 

@@ -5,6 +5,6 @@
 @endsection
 
 @section('content')
-    <nav><a href="{{ route('keyword.index') }}">← Vissza a kulcsszavakhoz</a></nav>
+    <nav class="mb-3"><a href="{{ route('keyword.index') }}">← Vissza a kulcsszavakhoz</a></nav>
     <x-articles :articles="$articles"></x-articles>
 @endsection
