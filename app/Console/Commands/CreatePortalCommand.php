@@ -46,13 +46,7 @@ class CreatePortalCommand extends Command
             return self::FAILURE;
         }
 
-        $rss = trim((string) $this->ask('Add meg a rss csatornát (pl. https://example.com/rss.xml)'));
-        if($rss === '') {
-            $this->error('Az rss nem lehet üres.');
-            return self::FAILURE;
-        }
-
-        $portalRepository->create($name, $domain, $rss);
+        $portalRepository->create($name, $domain);
         $this->info('A domain regisztrálva lett.');
         return self::SUCCESS;
     }

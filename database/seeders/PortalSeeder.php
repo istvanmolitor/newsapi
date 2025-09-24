@@ -16,17 +16,14 @@ class PortalSeeder extends Seeder
             [
                 'name' => 'index',
                 'domain' => 'https://index.hu',
-                'rss' => 'https://index.hu/24ora/rss/',
             ],
             [
                 'name' => 'telex',
                 'domain' => 'https://telex.hu',
-                'rss' => 'https://telex.hu/rss',
             ],
             [
                 'name' => '444',
                 'domain' => 'https://444.hu',
-                'rss' => 'https://444.hu/feed',
             ],
         ];
 
@@ -37,7 +34,6 @@ class PortalSeeder extends Seeder
                 ],
                 [
                     'domain' => $data['domain'],
-                    'rss' => $data['rss'],
                 ]
             );
         }

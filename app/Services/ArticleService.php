@@ -9,9 +9,7 @@ use App\Repositories\PortalRepositoryInterface;
 use App\Repositories\ArticleContentElementRepositoryInterface;
 use App\Repositories\ArticleRepositoryInterface;
 
-use Carbon\Carbon;
 use Exception;
-use Molitor\ArticleParser\Article\Article as ArticleObject;
 use Molitor\ArticleParser\Article\ArticleContentElement;
 
 use App\Models\Article;
@@ -55,9 +53,25 @@ class ArticleService
     {
         $portalModel = $this->portalRepository->getByName($name);
         if(!$portalModel) {
-            throw new Exception('URL is required');
+            throw new Exception('No portal with name: ' . $name);
         }
         $this->portal = $portalModel;
+    }
+
+    public function setPortalByUrl(string $url): void
+    {
+        $domain = $this->urlToDomain($url);
+        $portalModel = $this->portalRepository->getByDomain($domain);
+        if(!$portalModel) {
+            throw new Exception('No portal found: ' . $domain);
+        }
+        $this->portal = $portalModel;
+    }
+
+    public function createPortal(string $url): void
+    {
+        $domain = $this->urlToDomain($url);
+        $this->portal = $this->portalRepository->create($domain, $domain);
     }
 
     public function setArticle(Article $article): void
@@ -113,31 +127,6 @@ class ArticleService
             'main_image_author' => $author,
         ]);
         $this->article->save();
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function updateRss(string $name): void
-    {
-        $this->setPortalByName($name);
-
-        $feed = FeedsFacade::make($this->portal->rss);
-
-        if(!$feed) {
-            throw new Exception('RSS feed is not valid');
-        }
-
-        foreach ($feed->get_items() as $item) {
-            $this->save(
-                $item->get_permalink(),
-                $item->get_title(),
-                (string)$item->get_description(),
-                $item->get_date('Y-m-d H:i:s')
-            );
-        }
-        $this->portal->rss_downloaded_at = now();
-        $this->portal->save();
     }
 
     public function scrapeById(int $articleId): void

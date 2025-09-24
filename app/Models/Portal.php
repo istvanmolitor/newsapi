@@ -9,7 +9,6 @@ class Portal extends Model
     protected $fillable = [
         'name',
         'domain',
-        'rss',
     ];
 
     public function articles() {

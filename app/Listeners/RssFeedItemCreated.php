@@ -2,6 +2,8 @@
 
 namespace App\Listeners;
 
+use App\Services\ArticleService;
+use Exception;
 use Molitor\RssWatcher\Events\RssFeedItemCreated as Event;
 
 class RssFeedItemCreated
@@ -12,6 +14,16 @@ class RssFeedItemCreated
 
     public function handle(Event $event): void
     {
-        dump("Rss feed item created");
+        /** @var ArticleService $articleService */
+        $articleService = app(ArticleService::class);
+
+        $url = $event->item->url;
+
+        try {
+            $articleService->setArticleByUrl($url);
+        }
+        catch (Exception $e) {
+            $articleService->createPortal();
+        }
     }
 }

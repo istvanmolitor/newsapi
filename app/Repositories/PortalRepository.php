@@ -8,31 +8,31 @@ class PortalRepository implements PortalRepositoryInterface
 {
     private Portal $portal;
 
+    private array $domainCache = [];
+
     public function __construct()
     {
         $this->portal = new Portal();
     }
 
-    public function create(string $name, string $domain, string $rss): Portal
+    public function create(string $name, string $domain): Portal
     {
         return $this->portal->create([
             'name' => $name,
-            'domain' => $domain,
-            'rss' => $rss,
+            'domain' => $domain
         ]);
     }
 
-    public function getByDomain(string $domain): Portal
+    public function getByDomain(string $domain): Portal|null
     {
-        $portal = $this->portal->where('domain', $domain)->first();
-         if (!$portal) {
-             $portal = $this->create($domain, $domain);
-         }
-         return $portal;
+        if(!array_key_exists($domain, $this->domainCache)) {
+            $this->domainCache[$domain] = $this->portal->where('domain', $domain)->first();
+        };
+        return $this->domainCache[$domain];
     }
 
-    public function getByName(string $portal): ?Portal
+    public function getByName(string $name): Portal|null
     {
-        return $this->portal->where('name', $portal)->first();
+        return $this->portal->where('name', $name)->first();
     }
 }

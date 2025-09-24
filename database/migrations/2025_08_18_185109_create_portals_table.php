@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('domain');
-            $table->string('rss');
-            $table->dateTime('rss_downloaded_at')->nullable();
             $table->timestamps();
         });
     }
