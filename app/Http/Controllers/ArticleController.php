@@ -25,6 +25,31 @@ class ArticleController extends Controller
         ]);
     }
 
+    public function search(Request $request)
+    {
+        $q = trim((string) $request->input('q', ''));
+        $perPage = (int) $request->input('per_page', 12);
+        $perPage = $perPage > 0 && $perPage <= 50 ? $perPage : 12;
+
+        $articles = Article::query()
+            ->when($q !== '', function ($query) use ($q) {
+                $query->where(function ($sub) use ($q) {
+                    $sub->where('title', 'like', "%{$q}%")
+                        ->orWhere('lead', 'like', "%{$q}%");
+                });
+            })
+            ->orderByDesc('published_at')
+            ->orderByDesc('title')
+            ->paginate($perPage)
+            ->withQueryString();
+
+        return view('search.index', [
+            'articles' => $articles,
+            'q' => $q,
+            'title' => $q !== '' ? "Keresés: {$q}" : 'Keresés',
+        ]);
+    }
+
     public function show(Article $article, Request $request)
     {
         if($article->scraped_at === null || $request->has('refresh')) {
