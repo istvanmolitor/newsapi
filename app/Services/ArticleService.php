@@ -169,24 +169,28 @@ class ArticleService
             throw new Exception('Canant scrape article. Remote article is not valid. : ' . $this->article->url);
         }
 
+        $mainImage = $articleObject->getMainImage();
+
         $this->article->fill([
-            'title' => $articleObject->title,
-            'lead' => $articleObject->lead,
-            'author' => $articleObject->author,
-            'main_image_src' => $articleObject->mainImage?->getSrc(),
-            'main_image_alt' => $articleObject->mainImage?->getAlt(),
-            'main_image_author' => $articleObject->mainImage?->getAuthor(),
+            'title' => $articleObject->getTitle(),
+            'lead' => $articleObject->getLead(),
+            'author' => implode(',', $articleObject->getAuthors()),
+            'main_image_src' => $mainImage?->getSrc(),
+            'main_image_alt' => $mainImage?->getAlt(),
+            'main_image_author' => $mainImage?->getAuthor(),
             'scraped_at' => now(),
-            'published_at' => $articleObject->createdAt,
+            'published_at' => $articleObject->getCreatedAt(),
             'updated_at' => now(),
         ]);
         $this->article->save();
 
-        $this->keywordRepository->attachKeywordsToArticle($this->article, $articleObject->keywords);
+        $this->keywordRepository->attachKeywordsToArticle($this->article, $articleObject->getKeywords());
 
         $articleContentElements = $this->article->articleContentElements;
 
-        $oldCount = $articleObject->content->count();
+        $content = $articleObject->getContent();
+
+        $oldCount = $content->count();
         $newCount = $articleContentElements->count();
         $count = max($oldCount, $newCount);
 
@@ -195,7 +199,7 @@ class ArticleService
             $articleContentElementModel = $articleContentElements->get($i);
 
             /** @var ArticleContentElement $articleContentElement */
-            $articleContentElement = $articleObject->content->get($i);
+            $articleContentElement = $content->get($i);
 
             if($articleContentElement !== null && $articleContentElementModel !== null) {
                 //UPDATE
