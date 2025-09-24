@@ -26,8 +26,6 @@ use Molitor\ArticleParser\Article\QuoteContentElement;
 use Molitor\ArticleParser\Article\VideoArticleContentElement;
 use Molitor\ArticleParser\Services\ArticleParserService;
 
-use willvincent\Feeds\Facades\FeedsFacade;
-
 class ArticleService
 {
     private ?Portal $portal = null;
@@ -71,7 +69,7 @@ class ArticleService
     public function createPortalByUrl(string $url): void
     {
         $domain = $this->urlToDomain($url);
-        $this->portal = $this->portalRepository->create($domain, $domain);
+        $this->portal = $this->portalRepository->create(parse_url($url, PHP_URL_HOST), $domain);
     }
 
     public function selectArticle(Article $article): void

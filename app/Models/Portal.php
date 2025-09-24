@@ -14,4 +14,9 @@ class Portal extends Model
     public function articles() {
         return $this->hasMany(Article::class);
     }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

@@ -33,13 +33,17 @@
                     </time>
                 </span>
             </div>
-        </header>
 
-        @if(!empty($article->main_image_src))
-            <figure class="mb-6">
-                <img src="{{ $article->main_image_src }}" alt="{{ $article->main_image_alt ?? $article->title }}" class="w-full h-auto rounded-md border object-cover" loading="lazy">
-            </figure>
-        @endif
+            @if(!empty($article->main_image_src))
+                <figure class="mb-6">
+                    <img src="{{ $article->main_image_src }}" alt="{{ $article->main_image_alt ?? $article->title }}" class="w-full h-auto rounded-md border object-cover" loading="lazy">
+                </figure>
+            @endif
+
+                <span class="inline-flex items-center gap-1">
+                    <span class="font-medium"><a href="{{ $article->portal->domain }}" target="_blank">{{ $article->portal }}</a></span>
+                </span>
+        </header>
 
         <div class="prose max-w-none prose-neutral dark:prose-invert">
             @foreach($article->articleContentElements as $articleContentElement)
