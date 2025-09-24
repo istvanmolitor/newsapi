@@ -15,7 +15,7 @@ class ArticleController extends Controller
         $perPage = $perPage > 0 && $perPage <= 50 ? $perPage : 12;
 
         $articles = Article::orderByDesc('published_at')
-            ->orderByDesc('created_at')
+            ->orderByDesc('title')
             ->paginate($perPage)
             ->withQueryString();
 

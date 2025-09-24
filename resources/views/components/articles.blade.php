@@ -36,6 +36,10 @@
                             </time>
                         </span>
                     </div>
+                    <div class="mt-3 text-xs text-muted-foreground">
+                        <span class="inline-flex items-center gap-1">Portal:</span>
+                        <a href="{{ $article->portal->domain }}" target="_blank">{{ $article->portal }}</a>
+                    </div>
                     <div class="mt-4">
                         <a href="{{ route('article.show', $article) }}" class="inline-flex items-center gap-2 text-sm bg-secondary text-secondary-foreground px-3 py-1.5 rounded-md border hover:bg-accent">
                             Megnyitás
