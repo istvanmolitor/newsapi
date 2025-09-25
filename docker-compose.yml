@@ -25,7 +25,7 @@ services:
         image: mysql:8
         container_name: "newsapi_db"
         ports:
-            - "3312:3306"
+            - "3313:3306"
         environment:
             MYSQL_DATABASE: "newsapi"
             MYSQL_USER: "newsapi"
