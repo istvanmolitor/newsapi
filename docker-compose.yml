@@ -1,0 +1,40 @@
+services:
+    newsapi_php:
+        build:
+            context: .
+            dockerfile: "Dockerfile"
+        container_name: "newsapi_php"
+        ports:
+            - "80:80"
+        volumes:
+            - .:/var/www/html
+        networks:
+            - newsapi_net
+    newsapi_node:
+        image: node:18
+        container_name: newsapi_node
+        working_dir: /var/www/html
+        volumes:
+            - .:/var/www/html
+        command: sh -c "npm install && npm run dev"
+        ports:
+            - "5173:5173"
+        networks:
+            - newsapi_net
+    newsapi_db:
+        image: mysql:8
+        container_name: "newsapi_db"
+        ports:
+            - "3312:3306"
+        environment:
+            MYSQL_DATABASE: "newsapi"
+            MYSQL_USER: "newsapi"
+            MYSQL_PASSWORD: "newsapi"
+            MYSQL_ROOT_PASSWORD: "newsapi"
+        volumes:
+            - ../db/newsapi:/var/lib/mysql
+        networks:
+            - newsapi_net
+networks:
+    newsapi_net:
+        driver: bridge
