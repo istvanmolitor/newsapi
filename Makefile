@@ -46,9 +46,6 @@ stop: ## Konténerek leállítása
 web-enter: ## Belépés a web konténerbe
 	$(PHP_CONTAINER) bash
 
-node-enter: ## Belépés a node konténerbe
-	docker exec -it $(NODE_CONTAINER_NAME) bash
-
 permission: ## Jogosultságok beállítása
 	sudo chmod -R 777 storage
 	sudo chmod -R 777 bootstrap
@@ -63,6 +60,7 @@ npm-dev: ## Run npm run dev
 	$(NODE_CONTAINER) npm run dev
 
 npm-build: ## Run npm run build
+	$(PHP_CONTAINER) php artisan wayfinder:generate --with-form
 	$(NODE_CONTAINER) npm run build
 
 composer-install: ## Run composer install
