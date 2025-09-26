@@ -11,7 +11,7 @@ services:
         networks:
             - newsapi_net
     newsapi_node:
-        image: node:18
+        image: node:21
         container_name: newsapi_node
         working_dir: /var/www/html
         volumes:

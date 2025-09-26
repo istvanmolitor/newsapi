@@ -9,6 +9,7 @@ migrate-seed \
 permission \
 env-create \
 composer-install \
+npm-install \
 npm-dev \
 npm-build \
 install \
@@ -26,6 +27,8 @@ PWD := $(dir $(MAKEPATH))
 
 USER_ID=$(shell id -u)
 GROUP_ID=$(shell id -g)
+
+NODE=docker run -it -u $(USER_ID):$(GROUP_ID) -w /application -v $(PWD):/application $(NODE_CONTAINER)
 
 help: ## Segítség megjelenítése
 	@echo "Lehetőségek:"
@@ -66,11 +69,14 @@ composer-install: ## composer install
 	docker exec -it $(PHP_CONTAINER) git config --global --add safe.directory /var/www/html || true
 	docker exec -it $(PHP_CONTAINER) composer install
 
-npm-dev: ## npm run dev
-	docker exec -it $(NODE_CONTAINER) npm run dev
+npm-install: ## Run npm install
+	$(NODE) npm install
 
-npm-build: ## npm run build
-	docker exec -it $(NODE_CONTAINER) npm run build
+npm-dev: ## Run npm run dev
+	$(NODE) npm run dev
+
+npm-build: ## Run npm run build
+	$(NODE) npm run build
 
 install: start env-create composer-install key-generate npm-build permission ## Rendszer telepítése
 
