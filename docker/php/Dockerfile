@@ -19,6 +19,8 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+
+
 # Install Composer (legfrissebb stabil) biztonságosan
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
     php -r "copy('https://composer.github.io/installer.sig', 'composer-setup.sig');" && \
@@ -43,3 +45,4 @@ RUN mkdir -p /var/www/.ssh \
 RUN apt-get purge -y build-essential autoconf && \
     apt-get autoremove -y && \
     rm -rf /tmp/* /var/lib/apt/lists/*
+

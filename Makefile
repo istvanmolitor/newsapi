@@ -19,7 +19,7 @@ PROJECT_NAME = newsapi
 
 # Alapértelmezett változók
 PHP_CONTAINER_NAME = $(PROJECT_NAME)_php
-NODE_IMAGE_NAME = node:22
+NODE_CONTAINER_NAME = $(PROJECT_NAME)_node
 
 # Alapértelmezett cél: segítség megjelenítése
 .DEFAULT_GOAL := help
@@ -31,7 +31,7 @@ USER_ID=$(shell id -u)
 GROUP_ID=$(shell id -g)
 
 PHP_CONTAINER=docker exec -it -u $(USER_ID):$(GROUP_ID) $(PHP_CONTAINER_NAME)
-NODE_CONTAINER=docker run -it -u $(USER_ID):$(GROUP_ID) -w /application -v $(PWD):/application $(NODE_IMAGE_NAME)
+NODE_CONTAINER=docker compose run --rm -u $(USER_ID):$(GROUP_ID) -w /application -v $(PWD):/application $(NODE_CONTAINER_NAME)
 
 help: ## Segítség megjelenítése
 	@echo "Lehetőségek:"
@@ -60,7 +60,6 @@ npm-dev: ## Run npm run dev
 	$(NODE_CONTAINER) npm run dev
 
 npm-build: ## Run npm run build
-	$(PHP_CONTAINER) php artisan wayfinder:generate --with-form
 	$(NODE_CONTAINER) npm run build
 
 composer-install: ## Run composer install
@@ -91,4 +90,4 @@ uninstall: ## Rendszer törlése
 test: ## Run phpunit test
 	$(PHP_CONTAINER) ./vendor/bin/phpunit --testdox --configuration phpunit.xml
 
-install: start env-create composer-install key-generate npm-install npm-build permission ## Rendszer telepítése
+install: start env-create composer-install key-generate npm-update npm-build permission ## Rendszer telepítése

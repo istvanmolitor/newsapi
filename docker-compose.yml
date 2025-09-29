@@ -15,6 +15,15 @@ services:
             - .:/application
         networks:
             - newsapi_net
+    newsapi_node:
+        build:
+            context: .
+            dockerfile: "docker/node/Dockerfile"
+        container_name: "newsapi_node"
+        volumes:
+            - .:/application
+        networks:
+            - newsapi_net
     newsapi_db:
         image: mysql:8
         container_name: "newsapi_db"
