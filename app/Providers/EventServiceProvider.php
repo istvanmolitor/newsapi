@@ -2,9 +2,13 @@
 
 namespace App\Providers;
 
-use App\Listeners\RssFeedItemChanged;
-use App\Listeners\RssFeedItemCreated;
+use App\Listeners\RssFeedItemChangedListener;
+use App\Listeners\RssFeedItemCreatedListener;
+use App\Listeners\RssFeedItemDeletedListener;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Molitor\RssWatcher\Events\RssFeedItemChangedEvent;
+use Molitor\RssWatcher\Events\RssFeedItemCreatedEvent;
+use Molitor\RssWatcher\Events\RssFeedItemDeletedEvent;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -14,14 +18,14 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-        \Molitor\RssWatcher\Events\RssFeedItemCreated::class => [
-            RssFeedItemCreated::class,
+        RssFeedItemCreatedEvent::class => [
+            RssFeedItemCreatedListener::class,
         ],
-        \Molitor\RssWatcher\Events\RssFeedItemChanged::class => [
-            RssFeedItemChanged::class,
+        RssFeedItemChangedEvent::class => [
+            RssFeedItemChangedListener::class,
         ],
-        \Molitor\RssWatcher\Events\RssFeedItemDeleted::class => [
-            RssFeedItemDeleted::class,
+        RssFeedItemDeletedEvent::class => [
+            RssFeedItemDeletedListener::class,
         ],
     ];
 

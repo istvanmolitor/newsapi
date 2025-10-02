@@ -4,16 +4,17 @@ namespace App\Listeners;
 
 use App\Services\ArticleService;
 use Exception;
-use Molitor\RssWatcher\Events\RssFeedItemCreated as Event;
+use Molitor\RssWatcher\Events\RssFeedItemCreatedEvent;
 
-class RssFeedItemCreated
+class RssFeedItemCreatedListener
 {
     public function __construct()
     {
     }
 
-    public function handle(Event $event): void
+    public function handle(RssFeedItemCreatedEvent $event): void
     {
+        dump("Rss feed item created: " . $event->item->guid);
         /** @var ArticleService $articleService */
         $articleService = app(ArticleService::class);
 
