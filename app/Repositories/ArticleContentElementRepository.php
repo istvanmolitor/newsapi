@@ -6,7 +6,7 @@ use App\Enums\ArticleContentElementType;
 use App\Models\Article;
 use App\Models\ArticleContentElement;
 
-class ArticleContentContentElementRepository implements ArticleContentElementRepositoryInterface
+class ArticleContentElementRepository implements ArticleContentElementRepositoryInterface
 {
     private ArticleContentElement $articleElement;
 
@@ -39,5 +39,10 @@ class ArticleContentContentElementRepository implements ArticleContentElementRep
             'content' => $content,
         ]);
         $articleContentElement->save();
+    }
+
+    public function getFirstImage(Article $article): ArticleContentElement|null
+    {
+        return $this->articleElement->where('article_id', $article->id)->where('type', ArticleContentElementType::Image)->first();
     }
 }

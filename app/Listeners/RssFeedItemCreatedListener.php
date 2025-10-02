@@ -19,7 +19,6 @@ class RssFeedItemCreatedListener
         $articleService = app(ArticleService::class);
 
         $url = $event->item->link;
-        if(!$url) return;
 
         try {
             $articleService->selectPortalByUrl($url);
@@ -29,5 +28,6 @@ class RssFeedItemCreatedListener
         }
 
         $articleService->save($url, $event->item->title, $event->item->description, $event->item->image, $event->item->published_at);
+        $articleService->startScraping();
     }
 }

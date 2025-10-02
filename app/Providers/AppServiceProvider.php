@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Repositories\ArticleContentContentElementRepository;
+use App\Repositories\ArticleContentElementRepository;
 use App\Repositories\ArticleContentElementRepositoryInterface;
 use App\Repositories\ArticleRepository;
 use App\Repositories\ArticleRepositoryInterface;
@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(PortalRepositoryInterface::class, PortalRepository::class);
         $this->app->bind(ArticleRepositoryInterface::class, ArticleRepository::class);
-        $this->app->bind(ArticleContentElementRepositoryInterface::class, ArticleContentContentElementRepository::class);
+        $this->app->bind(ArticleContentElementRepositoryInterface::class, ArticleContentElementRepository::class);
         $this->app->bind(KeywordRepositoryInterface::class, KeywordRepository::class);
     }
 

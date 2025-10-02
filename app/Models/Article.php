@@ -13,6 +13,7 @@ class Article extends Model
         'title',
         'lead',
         'author',
+        'list_image_src',
         'main_image_src',
         'main_image_alt',
         'main_image_author',

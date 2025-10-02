@@ -124,7 +124,7 @@ class ArticleService
             $this->article = $this->articleRepository->create($this->portal, $url, $data);
         }
 
-        $this->startScraping();
+        $this->saveListImage();
     }
 
     public function startScraping(): bool
@@ -139,17 +139,26 @@ class ArticleService
         return false;
     }
 
-    public function saveMainImage(string $url, string $alt, string $author): void
+    public function saveListImage(): void
     {
         if($this->article === null) {
             throw new Exception('The article is not selected.');
         }
-        $this->article->fill([
-            'main_image_src' => $url,
-            'main_image_alt' => $alt,
-            'main_image_author' => $author,
-        ]);
-        $this->article->save();
+
+        $mainImageSrc = $this->article->main_image_src;
+        if($mainImageSrc) {
+            $this->article->list_image_src = $mainImageSrc;
+            $this->article->save();
+        }
+
+        $firstImage = $this->articleContentElementRepository->getFirstImage($this->article);
+        if($firstImage) {
+            $content = $firstImage->getContent();
+            if(isset($content['src'])) {
+                $this->article->list_image_src = $content['src'];
+                $this->article->save();
+            }
+        }
     }
 
     public function scrapeById(int $articleId): void

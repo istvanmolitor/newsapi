@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('title');
             $table->dateTime('published_at')->nullable();
             $table->string('author')->nullable();
+            $table->string('list_image_src')->nullable();
             $table->string('main_image_src')->nullable();
             $table->string('main_image_alt')->nullable();
             $table->string('main_image_author')->nullable();
