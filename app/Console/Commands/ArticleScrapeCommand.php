@@ -6,34 +6,35 @@ use App\Services\ArticleService;
 use Exception;
 use Illuminate\Console\Command;
 
-class UpdateArticleCommand extends Command
+class ArticleScrapeCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'article:scrape {url}';
+    protected $signature = 'article:scrape {id}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Scrape article by id';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $url = $this->argument('url');
+        $id = $this->argument('id');
 
         /** @var ArticleService $service */
         $service = app(ArticleService::class);
 
         try {
-            $service->scrapeByUrl($url);
+            $service->scrapeById($id);
+            $this->info('Article is scraped. : ' . $service->getArticle());
         }
         catch(Exception $e) {
             $this->error($e->getMessage());

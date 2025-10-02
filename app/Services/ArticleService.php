@@ -48,6 +48,15 @@ class ArticleService
         return parse_url($url, PHP_URL_SCHEME) . '://' . parse_url($url, PHP_URL_HOST);
     }
 
+    public function selectById(int $articleId): void
+    {
+        $article = $this->articleRepository->getById($articleId);
+        if(!$article) {
+            throw new Exception('Article is not found');
+        }
+        $this->selectArticle($article);
+    }
+
     public function selectPortalByName(string $name): void
     {
         $portalModel = $this->portalRepository->getByName($name);
@@ -115,9 +124,19 @@ class ArticleService
             $this->article = $this->articleRepository->create($this->portal, $url, $data);
         }
 
+        $this->startScraping();
+    }
+
+    public function startScraping(): bool
+    {
+        if($this->article === null) {
+            throw new Exception('The article is not selected.');
+        }
         if($this->article->scraped_at === null) {
             ScrapeArticleJob::dispatch($this->article->id);
+            return true;
         }
+        return false;
     }
 
     public function saveMainImage(string $url, string $alt, string $author): void
@@ -135,25 +154,8 @@ class ArticleService
 
     public function scrapeById(int $articleId): void
     {
-        $article = $this->articleRepository->getById($articleId);
-         if(!$article) {
-             throw new Exception('Article is not found');
-         }
-         $this->selectArticle($article);
-         $this->scrapeArticle();
-    }
-
-    public function fillArticle (): bool {
-        if($this->article === null) {
-            throw new Exception('Cannot fill article becouse the article is not selected.');
-        }
-        if($this->article->scraped_at) {
-            return false;
-        }
+        $this->selectById($articleId);
         $this->scrapeArticle();
-        $this->article->scraped_at = now();
-        $this->article->save();
-        return true;
     }
 
     public function scrapeByUrl(string $url): void
@@ -235,20 +237,20 @@ class ArticleService
 
     protected function makeType(ArticleContentElement $articleElement): ArticleContentElementType
     {
-        if($articleElement instanceof ParagraphArticleContentElement) {
-            return ArticleContentElementType::Paragraph;
-        }
-        elseif($articleElement instanceof QuoteArticleContentElement) {
+        if($articleElement instanceof QuoteArticleContentElement) {
             return ArticleContentElementType::Quote;
+        }
+        elseif($articleElement instanceof HeadingArticleContentElement) {
+            return ArticleContentElementType::Heading;
+        }
+        elseif($articleElement instanceof ParagraphArticleContentElement) {
+            return ArticleContentElementType::Paragraph;
         }
         elseif($articleElement instanceof ImageArticleContentElement) {
             return ArticleContentElementType::Image;
         }
         elseif($articleElement instanceof ListArticleContentElement) {
             return ArticleContentElementType::List;
-        }
-        elseif($articleElement instanceof HeadingArticleContentElement) {
-            return ArticleContentElementType::Heading;
         }
         elseif($articleElement instanceof VideoArticleContentElement) {
             return ArticleContentElementType::Video;
@@ -266,14 +268,14 @@ class ArticleService
         elseif($articleElement instanceof QuoteArticleContentElement) {
             return $articleElement->getContent();
         }
+        elseif($articleElement instanceof HeadingArticleContentElement){
+            return $articleElement->getContent();
+        }
         elseif($articleElement instanceof ImageArticleContentElement) {
             return json_encode($articleElement->getData());
         }
         elseif($articleElement instanceof ListArticleContentElement){
             return json_encode($articleElement->getItems());
-        }
-        elseif($articleElement instanceof HeadingArticleContentElement){
-            return json_encode($articleElement->getData());
         }
         elseif($articleElement instanceof VideoArticleContentElement){
             return json_encode($articleElement->getData());
@@ -281,5 +283,10 @@ class ArticleService
         else {
             return '';
         }
+    }
+
+    public function getArticle(): Article|null
+    {
+        return $this->article;
     }
 }

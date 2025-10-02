@@ -23,10 +23,13 @@ class ArticleContentElement extends Model
         return $this->belongsTo(Article::class);
     }
 
-
     public function getContent(): array|string|stdClass
     {
-        if($this->type === ArticleContentElementType::Paragraph || $this->type === ArticleContentElementType::Quote) {
+        if(
+            $this->type === ArticleContentElementType::Paragraph ||
+            $this->type === ArticleContentElementType::Quote ||
+            $this->type === ArticleContentElementType::Heading
+        ) {
             return (string)$this->content;
         }
         else {

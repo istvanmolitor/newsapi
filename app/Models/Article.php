@@ -34,4 +34,9 @@ class Article extends Model
     {
         return $this->belongsToMany(Keyword::class, 'article_keyword');
     }
+
+    public function __toString()
+    {
+        return $this->url;
+    }
 }

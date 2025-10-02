@@ -2,6 +2,8 @@
     <p class="text-justify my-3">{{ $articleContentElement->content }}</p>
 @elseif($articleContentElement->type === \App\Enums\ArticleContentElementType::Quote)
     <blockquote>{{ $articleContentElement->content }}</blockquote>
+@elseif($articleContentElement->type === \App\Enums\ArticleContentElementType::Heading)
+    <h2 class="font-extrabold">{{ $articleContentElement->content }}</h2>
 @elseif($articleContentElement->type === \App\Enums\ArticleContentElementType::List)
     @php $content = $articleContentElement->getContent(); @endphp
     <ul class="list-disc list-inside my-3">
@@ -9,10 +11,6 @@
             <li>{{ $item }}</li>
         @endforeach
     </ul>
-@elseif($articleContentElement->type === \App\Enums\ArticleContentElementType::Heading)
-    @php $content = $articleContentElement->getContent(); @endphp
-    <h{{ $content->level }} class="font-extrabold">{{ $content->content }}</h{{ $content->level }}>
-
 @elseif($articleContentElement->type === \App\Enums\ArticleContentElementType::Image)
     @php $content = $articleContentElement->getContent(); @endphp
     <figure class="mb-6">
