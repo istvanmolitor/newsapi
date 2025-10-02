@@ -91,12 +91,14 @@ class ArticleService
         string $url,
         string $title,
         string $lead,
+        string|null $image,
         string $publishedAt
     ): void
     {
         $data = [
             'title' => $title,
             'lead' => $lead,
+            'main_image_src' => $image,
             'published_at' => $publishedAt,
         ];
 

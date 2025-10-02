@@ -28,6 +28,6 @@ class RssFeedItemCreatedListener
             $articleService->createPortalByUrl($url);
         }
 
-        $articleService->save($url, $event->item->title, $event->item->description, $event->item->published_at);
+        $articleService->save($url, $event->item->title, $event->item->description, $event->item->image, $event->item->published_at);
     }
 }
