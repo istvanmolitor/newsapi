@@ -31,6 +31,7 @@ class ScrapeArticleJob implements ShouldQueue
 
         try {
             $articleService->scrapeById($this->articleId);
+            $articleService->saveToElastic();
         }
         catch (Exception $e) {
             Log::warning('ScrapeArticleJob failed for article '.$this->articleId.': '.$e->getMessage());

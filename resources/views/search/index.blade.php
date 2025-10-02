@@ -5,5 +5,5 @@
 @endsection
 
 @section('content')
-    <x-articles :articles="$articles"></x-articles>
+    <x-article-list :articles="$articles"></x-article-list>
 @endsection

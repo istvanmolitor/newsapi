@@ -34,6 +34,7 @@ class ArticleScrapeCommand extends Command
 
         try {
             $service->scrapeById($id);
+            $service->saveToElastic();
             $this->info('Article is scraped. : ' . $service->getArticle());
         }
         catch(Exception $e) {

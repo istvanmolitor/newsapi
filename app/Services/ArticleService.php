@@ -26,6 +26,7 @@ use Molitor\ArticleParser\Article\QuoteArticleContentElement;
 use Molitor\ArticleParser\Article\QuoteContentElement;
 use Molitor\ArticleParser\Article\VideoArticleContentElement;
 use Molitor\ArticleParser\Services\ArticleParserService;
+use Illuminate\Support\Facades\Http;
 
 class ArticleService
 {
@@ -38,7 +39,8 @@ class ArticleService
         private PortalRepositoryInterface $portalRepository,
         private ArticleRepositoryInterface $articleRepository,
         private ArticleContentElementRepositoryInterface $articleContentElementRepository,
-        private KeywordRepositoryInterface $keywordRepository
+        private KeywordRepositoryInterface $keywordRepository,
+        private ElasticService $elasticService
     )
     {
     }
@@ -297,5 +299,14 @@ class ArticleService
     public function getArticle(): Article|null
     {
         return $this->article;
+    }
+    
+    public function saveToElastic(): void
+    {
+        if ($this->article === null) {
+            throw new Exception('The article is not selected.');
+        }
+
+        $this->elasticService->indexArticle($this->article);
     }
 }

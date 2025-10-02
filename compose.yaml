@@ -24,6 +24,7 @@ services:
         depends_on:
             - mysql
             - minio
+            - elasticsearch
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
@@ -41,14 +42,6 @@ services:
             - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
         networks:
             - sail
-        healthcheck:
-            test:
-                - CMD
-                - mysqladmin
-                - ping
-                - '-p${DB_PASSWORD}'
-            retries: 3
-            timeout: 5s
     minio:
         image: 'minio/minio:latest'
         ports:
@@ -62,14 +55,18 @@ services:
         networks:
             - sail
         command: 'minio server /data --console-address ":8900"'
-        healthcheck:
-            test:
-                - CMD
-                - mc
-                - ready
-                - local
-            retries: 3
-            timeout: 5s
+    elasticsearch:
+        image: 'docker.elastic.co/elasticsearch/elasticsearch:8.14.3'
+        environment:
+            - discovery.type=single-node
+            - xpack.security.enabled=false
+            - ES_JAVA_OPTS=-Xms512m -Xmx512m
+        ports:
+            - '${FORWARD_ELASTICSEARCH_PORT:-9200}:9200'
+        volumes:
+            - 'sail-elasticsearch:/usr/share/elasticsearch/data'
+        networks:
+            - sail
 networks:
     sail:
         driver: bridge
@@ -77,4 +74,6 @@ volumes:
     sail-mysql:
         driver: local
     sail-minio:
+        driver: local
+    sail-elasticsearch:
         driver: local

@@ -34,5 +34,8 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
-
+    'elastic' => [
+        'host' => env('ELASTICSEARCH_HOST', 'localhost:9200'),
+        'index' => env('ELASTICSEARCH_INDEX', 'articles'),
+    ],
 ];

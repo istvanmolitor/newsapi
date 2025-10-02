@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\ScrapeArticleJob;
 use App\Models\Article;
 use App\Services\ArticleService;
+use App\Services\ElasticService;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -26,23 +27,11 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function search(Request $request)
+    public function search(Request $request, ElasticService $elasticService)
     {
         $q = trim((string) $request->input('q', ''));
-        $perPage = (int) $request->input('per_page', 12);
-        $perPage = $perPage > 0 && $perPage <= 50 ? $perPage : 12;
 
-        $articles = Article::query()
-            ->when($q !== '', function ($query) use ($q) {
-                $query->where(function ($sub) use ($q) {
-                    $sub->where('title', 'like', "%{$q}%")
-                        ->orWhere('lead', 'like', "%{$q}%");
-                });
-            })
-            ->orderByDesc('published_at')
-            ->orderByDesc('title')
-            ->paginate($perPage)
-            ->withQueryString();
+        $articles = $elasticService->searchArticles($q);
 
         return view('search.index', [
             'articles' => $articles,
