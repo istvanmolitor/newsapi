@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\ArticleContentElementType;
+use App\Jobs\ScrapeArticleJob;
 use App\Models\Portal;
 use App\Repositories\KeywordRepositoryInterface;
 use App\Repositories\PortalRepositoryInterface;
@@ -112,6 +113,10 @@ class ArticleService
                 throw new Exception('The portal is not selected.');
             }
             $this->article = $this->articleRepository->create($this->portal, $url, $data);
+        }
+
+        if($this->article->scraped_at === null) {
+            ScrapeArticleJob::dispatch($this->article->id);
         }
     }
 

@@ -43,6 +43,19 @@ return [
             'after_commit' => false,
         ],
 
+        // Dedicated connection alias for scraping jobs to allow running
+        // `php artisan queue:work scraping` without additional flags.
+        // Uses the same jobs table and database connection as the default
+        // database queue but defaults to the "scraping" queue name.
+        'scraping' => [
+            'driver' => env('SCRAPING_QUEUE_DRIVER', env('QUEUE_CONNECTION', 'database')),
+            'connection' => env('DB_QUEUE_CONNECTION'),
+            'table' => env('DB_QUEUE_TABLE', 'jobs'),
+            'queue' => env('SCRAPING_QUEUE', 'scraping'),
+            'retry_after' => (int) env('SCRAPING_QUEUE_RETRY_AFTER', env('DB_QUEUE_RETRY_AFTER', 90)),
+            'after_commit' => false,
+        ],
+
         'beanstalkd' => [
             'driver' => 'beanstalkd',
             'host' => env('BEANSTALKD_QUEUE_HOST', 'localhost'),

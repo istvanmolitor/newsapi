@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ScrapeArticleJob;
 use App\Models\Article;
 use App\Services\ArticleService;
 use Exception;
