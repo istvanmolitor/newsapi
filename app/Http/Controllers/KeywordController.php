@@ -12,7 +12,9 @@ class KeywordController extends Controller
         $perPage = (int) $request->input('per_page', 50);
         $perPage = $perPage > 0 && $perPage <= 100 ? $perPage : 50;
 
-        $keywords = Keyword::orderBy('keyword')
+        $keywords = Keyword::withCount('articles')
+            ->orderByDesc('articles_count')
+            ->orderBy('keyword')
             ->paginate($perPage)
             ->withQueryString();
 

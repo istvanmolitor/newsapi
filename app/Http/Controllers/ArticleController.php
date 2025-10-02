@@ -53,6 +53,13 @@ class ArticleController extends Controller
             catch(Exception $e) {}
         }
 
+        // Eager-load keywords with articles_count and sort them by count desc
+        $article->load(['keywords' => function($q) {
+            $q->withCount('articles');
+        }]);
+        // Sort in-memory to preserve descending order by articles_count, then by keyword as tiebreaker
+        $article->setRelation('keywords', $article->keywords->sortByDesc('articles_count')->values());
+
         return view('article.show', [
             'article' => $article
         ]);
