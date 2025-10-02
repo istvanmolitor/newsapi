@@ -8,7 +8,13 @@
             <article class="bg-card text-card-foreground rounded-lg shadow-sm border border-border overflow-hidden flex flex-col">
                 @if(!empty($article->list_image_src))
                     <a href="{{ route('article.show', $article) }}" class="block">
-                        <img src="{{ $article->list_image_src }}" class="w-full h-44 object-cover" loading="lazy">
+                        <img src="{{ $article->list_image_src }}" class="w-full h-44 object-cover" loading="lazy" alt="">
+                    </a>
+                @else
+                    <a href="{{ route('article.show', $article) }}" class="block">
+                        <div class="w-full h-44 bg-muted flex items-center justify-center text-muted-foreground select-none" aria-hidden="true">
+                            <!-- spacer for missing image -->
+                        </div>
                     </a>
                 @endif
                 <div class="p-4 flex-1 flex flex-col">
