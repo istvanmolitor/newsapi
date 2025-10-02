@@ -5,7 +5,6 @@ use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\PortalController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 // Cikkek listázása
 Route::get('/', [ArticleController::class, 'index'])->name('article.index');
@@ -24,12 +23,12 @@ Route::get('calendar/day/{date}', [CalendarController::class, 'day'])
     ->name('calendar.day');
 
 //Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
-
-    Route::get('article/{article}', [ArticleController::class, 'show'])->name('article.show');
+/*Route::get('dashboard', function () {
+    return Inertia::render('dashboard');
+})->name('dashboard');
+*/
+Route::get('article/{article}', [ArticleController::class, 'show'])->name('article.show');
 //});
 
-require __DIR__.'/settings.php';
-require __DIR__.'/auth.php';
+//require __DIR__.'/settings.php';
+//require __DIR__.'/auth.php';
