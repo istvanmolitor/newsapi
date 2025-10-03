@@ -5,6 +5,11 @@
 @endsection
 
 @section('content')
+    <div class="mb-4 flex justify-end">
+        <a href="{{ route('article.scrape', $article) }}" class="inline-flex items-center gap-2 text-sm bg-primary text-primary-foreground px-3 py-1.5 rounded-md border hover:bg-accent">
+            Újra feldolgozás
+        </a>
+    </div>
     <header class="mb-6">
 
         <span class="inline-flex items-center gap-1">

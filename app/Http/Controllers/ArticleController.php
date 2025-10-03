@@ -41,17 +41,22 @@ class ArticleController extends Controller
         ]);
     }
 
+    public function scrape(Article $article)
+    {
+        $articleService = app(ArticleService::class);
+        $articleService->selectArticle($article);
+        try {
+            $articleService->scrapeArticle();
+            $article = Article::find($article->id);
+        }
+        catch(Exception $e) {}
+        return redirect()->route('article.show', $article);
+    }
+
     public function show(Article $article, Request $request, ArticleRepository $articleRepository)
     {
-        if($article->scraped_at === null || $request->has('refresh')) {
-            /** @var ArticleService $articleService */
-            $articleService = app(ArticleService::class);
-            $articleService->selectArticle($article);
-            try {
-                $articleService->scrapeArticle();
-                $article = Article::find($article->id);
-            }
-            catch(Exception $e) {}
+        if($article->scraped_at === null) {
+            return redirect()->route('article.scrape', $article);
         }
 
         // Eager-load keywords with articles_count and sort them by count desc

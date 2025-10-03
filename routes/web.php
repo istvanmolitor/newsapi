@@ -38,6 +38,7 @@ Route::get('calendar/day/{date}', [CalendarController::class, 'day'])
 })->name('dashboard');
 */
 Route::get('article/{article}', [ArticleController::class, 'show'])->name('article.show');
+Route::get('article/{article}/scrape', [ArticleController::class, 'scrape'])->name('article.scrape');
 //});
 
 //require __DIR__.'/settings.php';
