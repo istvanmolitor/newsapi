@@ -4,6 +4,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\PortalController;
+use App\Http\Controllers\ArticleSimilarityController;
 use Illuminate\Support\Facades\Route;
 
 // Cikkek listázása
@@ -11,6 +12,9 @@ Route::get('/', [ArticleController::class, 'index'])->name('article.index');
 Route::get('search', [ArticleController::class, 'search'])->name('article.search');
 Route::get('keywords', [KeywordController::class, 'index'])->name('keyword.index');
 Route::get('keyword/{keyword}', [KeywordController::class, 'show'])->name('keyword.show');
+
+// Hasonlóságok
+Route::get('similarities', [ArticleSimilarityController::class, 'index'])->name('similarity.index');
 
 // Portálok
 Route::get('portals', [PortalController::class, 'index'])->name('portal.index');
