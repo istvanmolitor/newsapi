@@ -28,19 +28,6 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function search(Request $request, ElasticService $elasticService)
-    {
-        $q = trim((string) $request->input('q', ''));
-
-        $articles = $elasticService->searchArticles($q);
-
-        return view('search.index', [
-            'articles' => $articles,
-            'q' => $q,
-            'title' => $q !== '' ? "Keresés: {$q}" : 'Keresés',
-        ]);
-    }
-
     public function scrape(Article $article)
     {
         $articleService = app(ArticleService::class);

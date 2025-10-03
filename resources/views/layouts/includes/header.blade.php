@@ -15,7 +15,7 @@
             <a href="{{ route('collection.index') }}" class="text-sm/6 font-semibold text-gray-900">Gyűjtemények</a>
         </div>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-4">
-            <form action="{{ route('article.search') }}" method="get" class="relative w-72">
+            <form action="{{ route('search.index') }}" method="get" class="relative w-72">
                 <input type="text" name="q" value="{{ request('q') }}" placeholder="Keresés..." class="w-full border rounded-md pl-3 pr-10 py-2" />
                 <button type="submit" class="absolute right-1 top-1/2 -translate-y-1/2 px-2 py-1 text-sm text-white bg-blue-600 rounded">OK</button>
             </form>
@@ -56,7 +56,7 @@
                                 <a href="{{ route('collection.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Gyűjtemények</a>
                             </div>
                             <div class="py-6">
-                                <form action="{{ route('article.search') }}" method="get" class="flex gap-2">
+                                <form action="{{ route('search.index') }}" method="get" class="flex gap-2">
                                     <input type="text" name="q" value="{{ request('q') }}" placeholder="Keresés..." class="w-full border rounded-md px-3 py-2" />
                                     <button type="submit" class="px-3 py-2 bg-blue-600 text-white rounded-md">Keresés</button>
                                 </form>

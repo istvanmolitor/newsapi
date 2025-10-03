@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Article;
 use App\Models\Keyword;
+use Illuminate\Database\Eloquent\Collection;
 
 interface KeywordRepositoryInterface
 {
@@ -22,4 +23,6 @@ interface KeywordRepositoryInterface
      * @param string[] $keywords
      */
     public function attachKeywordsToArticle(Article $article, array $keywords): void;
+
+    public function search(string $q, int $int): Collection;
 }

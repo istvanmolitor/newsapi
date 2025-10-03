@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Article;
 use App\Models\Keyword;
+use Illuminate\Database\Eloquent\Collection;
 
 class KeywordRepository implements KeywordRepositoryInterface
 {
@@ -73,5 +74,14 @@ class KeywordRepository implements KeywordRepositoryInterface
         if (!empty($ids)) {
             $article->keywords()->syncWithoutDetaching($ids);
         }
+    }
+
+    public function search(string $q, int $int): Collection
+    {
+        return $this->keyword
+            ->where('keyword', 'like', '%' . $q . '%')
+            ->orderBy('keyword')
+            ->limit($int)
+            ->get();
     }
 }
