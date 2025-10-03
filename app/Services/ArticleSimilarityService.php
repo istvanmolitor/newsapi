@@ -5,12 +5,14 @@ namespace App\Services;
 use App\Models\Article;
 use App\Models\ArticleSimilarity;
 use App\Repositories\ArticleRepositoryInterface;
+use Illuminate\Support\Collection;
 
 class ArticleSimilarityService
 {
+    protected ArticleSimilarity $articleSimilarity;
+
     public function __construct(
         protected ElasticArticleService      $elasticService,
-        protected ArticleSimilarityService   $articleSimilarityService,
         protected ArticleRepositoryInterface $articleRepository,
     )
     {
@@ -54,5 +56,28 @@ class ArticleSimilarityService
         foreach ($articles as $article) {
             $this->calculate($article);
         }
+    }
+
+    public function getSimilarArticles(Article $article, int $limit): Collection
+    {
+        $similarities = $this->articleSimilarity
+            ->where('article_id_1', $article->id)
+            ->orderBy('similarity', 'desc')
+            ->limit($limit)
+            ->get();
+
+        $articleIds = $similarities->pluck('article_id_2')->toArray();
+
+        if (empty($articleIds)) {
+            return new Collection();
+        }
+
+        $articles = Article::whereIn('id', $articleIds)->get();
+
+        $articlesOrdered = collect($articleIds)->map(function ($id) use ($articles) {
+            return $articles->firstWhere('id', $id);
+        })->filter();
+
+        return $articlesOrdered;
     }
 }

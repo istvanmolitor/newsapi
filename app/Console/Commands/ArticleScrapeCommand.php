@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Services\ArticleService;
+use App\Services\ElasticArticleService;
 use Exception;
 use Illuminate\Console\Command;
 
@@ -29,13 +30,14 @@ class ArticleScrapeCommand extends Command
     {
         $id = $this->argument('id');
 
-        /** @var ArticleService $service */
-        $service = app(ArticleService::class);
+        /** @var ArticleService $articleService */
+        $articleService = app(ArticleService::class);
+        $elasticService = app(ElasticArticleService::class);
 
         try {
-            $service->scrapeById($id);
-            $service->saveToElastic();
-            $this->info('Article is scraped. : ' . $service->getArticle());
+            $article = $articleService->scrapeById($id);
+            $elasticService->indexArticle($article);
+            $this->info('Article is scraped. : ' . $article->title);
         }
         catch(Exception $e) {
             $this->error($e->getMessage());

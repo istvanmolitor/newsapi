@@ -44,6 +44,12 @@ class ArticleController extends Controller
         $article->setRelation('keywords', $article->keywords->sortByDesc('articles_count')->values());
 
         $recommendedArticles = $articleRepository->articlesInSameCollections($article, 3);
+        if($recommendedArticles->isEmpty()) {
+            /** @var ArticleSimilarityService $similarityService */
+            $similarityService = app(ArticleSimilarityService::class);
+            $recommendedArticles = $similarityService->getSimilarArticles($article, 3);
+        }
+
 
         return view('article.show', [
             'article' => $article,

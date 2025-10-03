@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Article;
 use App\Models\Portal;
+use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
 
 class ArticleRepository implements ArticleRepositoryInterface
@@ -35,14 +36,11 @@ class ArticleRepository implements ArticleRepositoryInterface
         return $this->article->where('hash', md5($url))->where('url', $url)->first();
     }
 
-    public function articlesInSameCollections(Article $article, int $limit = 10)
+    public function articlesInSameCollections(Article $article, int $limit = 10): Collection
     {
         $collectionIds = $article->collections()->pluck('article_collections.id');
         if ($collectionIds->isEmpty()) {
-            return $this->article->where('id', '!=', $article->id)
-                ->inRandomOrder()
-                ->limit($limit)
-                ->get();
+            return collect();
         }
 
         return $this->article->where('id', '!=', $article->id)
