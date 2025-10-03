@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('article_id')->constrained()->cascadeOnDelete();
             $table->foreignId('article_collection_id')->constrained()->cascadeOnDelete();
             $table->unique(['article_id', 'article_collection_id'], 'u_article_collection');
-            $table->timestamps();
+            $table->dateTime('created_at')->useCurrent();
         });
     }
 
