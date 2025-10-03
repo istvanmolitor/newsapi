@@ -76,6 +76,8 @@ class CalendarController extends Controller
             'title' => 'Cikkek: ' . $day->format('Y.m.d'),
             'day' => $day,
             'articles' => $articles,
+            'prevDay' => $day->copy()->subDay(),
+            'nextDay' => $day->copy()->addDay(),
         ]);
     }
 }
