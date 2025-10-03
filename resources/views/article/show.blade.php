@@ -62,5 +62,5 @@
 @endsection
 
 @section('sidebar')
-    <x-article-vertical-list :articles="$randomArticles"></x-article-vertical-list>
+    <x-article-vertical-list :articles="$recommendedArticles"></x-article-vertical-list>
 @endsection

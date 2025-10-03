@@ -33,4 +33,24 @@ class ArticleRepository implements ArticleRepositoryInterface
     {
         return $this->article->where('hash', md5($url))->where('url', $url)->first();
     }
+
+    public function articlesInSameCollections(Article $article, int $limit = 10)
+    {
+        $collectionIds = $article->collections()->pluck('article_collections.id');
+        if ($collectionIds->isEmpty()) {
+            return $this->article->where('id', '!=', $article->id)
+                ->inRandomOrder()
+                ->limit($limit)
+                ->get();
+        }
+
+        return $this->article->where('id', '!=', $article->id)
+            ->whereHas('collections', function ($q) use ($collectionIds) {
+                $q->whereIn('article_collections.id', $collectionIds);
+            })
+            ->with('portal')
+            ->orderByDesc('published_at')
+            ->limit($limit)
+            ->get();
+    }
 }

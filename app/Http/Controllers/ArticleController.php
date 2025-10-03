@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\ScrapeArticleJob;
 use App\Models\Article;
+use App\Repositories\ArticleRepository;
 use App\Services\ArticleService;
 use App\Services\ElasticService;
 use Exception;
@@ -40,7 +41,7 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function show(Article $article, Request $request)
+    public function show(Article $article, Request $request, ArticleRepository $articleRepository)
     {
         if($article->scraped_at === null || $request->has('refresh')) {
             /** @var ArticleService $articleService */
@@ -60,14 +61,11 @@ class ArticleController extends Controller
         // Sort in-memory to preserve descending order by articles_count, then by keyword as tiebreaker
         $article->setRelation('keywords', $article->keywords->sortByDesc('articles_count')->values());
 
-        $randomArticles = Article::where('id', '!=', $article->id)
-            ->inRandomOrder()
-            ->limit(3)
-            ->get();
+        $recommendedArticles = $articleRepository->articlesInSameCollections($article, 3);
 
         return view('article.show', [
             'article' => $article,
-            'randomArticles' => $randomArticles,
+            'recommendedArticles' => $recommendedArticles,
         ]);
     }
 }
