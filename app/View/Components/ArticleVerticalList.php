@@ -12,10 +12,10 @@ class ArticleVerticalList extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public $articles,
+        protected $articles,
+        protected bool $noImage = true
     )
     {
-        //
     }
 
     /**
@@ -24,7 +24,8 @@ class ArticleVerticalList extends Component
     public function render(): View|Closure|string
     {
         return view('components.article-vertical-list', [
-            'articles' => $this->articles
+            'articles' => $this->articles,
+            'noImage' => $this->noImage,
         ]);
     }
 }

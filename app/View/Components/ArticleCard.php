@@ -12,7 +12,8 @@ class ArticleCard extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public $article,
+        private $article,
+        private $noImage = true,
     )
     {
         //
@@ -24,7 +25,8 @@ class ArticleCard extends Component
     public function render(): View|Closure|string
     {
         return view('components.article-card', [
-            'article' => $this->article
+            'article' => $this->article,
+            'noImage' => $this->noImage,
         ]);
     }
 }

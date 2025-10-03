@@ -4,57 +4,55 @@
     {{ $article->title ?? 'Cím nélkül' }}
 @endsection
 
-@section('content')
-    <div class="mb-4 flex justify-end">
-        <a href="{{ route('article.scrape', $article) }}" class="inline-flex items-center gap-2 text-sm bg-primary text-primary-foreground px-3 py-1.5 rounded-md border hover:bg-accent">
-            Újra feldolgozás
-        </a>
-    </div>
-    <header class="mb-6">
-
-        <span class="inline-flex items-center gap-1">
-            <span class="font-medium"><a href="{{ route('portal.show', $article->portal) }}">{{ $article->portal }}</a></span>
-        </span>
-
-        @if(!empty($article->lead))
-            <p class="mt-3 text-muted-foreground">{{ $article->lead }}</p>
-        @endif
-
-        <div class="mt-4 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-            @if(!empty($article->author))
-                <span class="inline-flex items-center gap-1">
-                    <span class="font-medium">Szerző:</span>
-                    <span>{{ $article->author }}</span>
+@section('page_top')
+    <header class="mb-6 bg-gray-100 rounded-2xl p-6">
+        <div class="flex flex-wrap items-start justify-between gap-4 text-sm text-muted-foreground">
+            <div class="flex flex-wrap items-center gap-3">
+                @if(!empty($article->author))
+                    <span class="inline-flex items-center gap-1">
+                        <span class="font-medium">Szerző:</span>
+                        <span>{{ $article->author }}</span>
+                    </span>
+                @endif
+                    <span class="inline-flex items-center gap-1">
+                    <span class="font-medium"><a href="{{ route('portal.show', $article->portal) }}">{{ $article->portal }}</a></span>
                 </span>
-            @endif
-            @if(!empty($article->published_at))
-                <span class="inline-flex items-center gap-1">
-                    <span class="font-medium">Megjelenés:</span>
-                    <time datetime="{{ \Carbon\Carbon::parse($article->published_at)->toIso8601String() }}">
-                        {{ \Carbon\Carbon::parse($article->published_at)->format('Y.m.d H:i') }}
-                    </time>
-                </span>
-            @endif
-            <span class="inline-flex items-center gap-1">
-                <span class="font-medium">Rögzítve:</span>
-                <time datetime="{{ \Carbon\Carbon::parse($article->created_at)->toIso8601String() }}">
-                    {{ \Carbon\Carbon::parse($article->created_at)->format('Y.m.d H:i') }}
-                </time>
-            </span>
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+                @if(!empty($article->published_at))
+                    <span class="inline-flex items-center gap-1">
+                        <span class="font-medium">Megjelenés:</span>
+                        <time datetime="{{ \Carbon\Carbon::parse($article->published_at)->toIso8601String() }}">
+                            {{ \Carbon\Carbon::parse($article->published_at)->format('Y.m.d H:i') }}
+                        </time>
+                    </span>
+                @else
+                    <span class="inline-flex items-center gap-1">
+                        <span class="font-medium">Rögzítve:</span>
+                        <time datetime="{{ \Carbon\Carbon::parse($article->created_at)->toIso8601String() }}">
+                            {{ \Carbon\Carbon::parse($article->created_at)->format('Y.m.d H:i') }}
+                        </time>
+                    </span>
+                @endif
+            </div>
         </div>
-
-        @if(!empty($article->main_image_src))
-            <figure class="mb-6">
-                <img src="{{ $article->main_image_src }}" alt="{{ $article->main_image_alt ?? $article->title }}" class="w-full h-auto rounded-md border object-cover" loading="lazy">
-            </figure>
-        @endif
-
-        <x-keywords :keywords="$article->keywords"></x-keywords>
     </header>
+@endsection
+
+@section('content')
+    @if(!empty($article->main_image_src))
+        <figure class="mb-6">
+            <img src="{{ $article->main_image_src }}" alt="{{ $article->main_image_alt ?? $article->title }}" class="w-full h-auto rounded-md border object-cover" loading="lazy">
+        </figure>
+    @endif
+
+    @if(!empty($article->lead))
+        <p class="mt-3 text-2xl"><b>{{ $article->lead }}</b></p>
+    @endif
 
     <div class="prose max-w-none prose-neutral dark:prose-invert">
         @foreach($article->articleContentElements as $articleContentElement)
-            <x-article-content-element :element="$articleContentElement" />
+            <x-article-content-element :element="$articleContentElement"></x-article-content-element>
         @endforeach
     </div>
 
@@ -67,5 +65,6 @@
 @endsection
 
 @section('sidebar')
-    <x-article-vertical-list :articles="$recommendedArticles"></x-article-vertical-list>
+    <x-keywords :keywords="$article->keywords"></x-keywords>
+    <x-article-vertical-list :articles="$recommendedArticles" :no-image="false"></x-article-vertical-list>
 @endsection
