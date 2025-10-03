@@ -4,17 +4,16 @@ namespace App\Services;
 
 use App\Models\Article;
 use App\Models\ArticleSimilarity;
+use App\Repositories\ArticleRepositoryInterface;
 
 class ArticleSimilarityService
 {
-    protected ElasticService $elasticService;
-
-    protected ArticleSimilarity $articleSimilarity;
-
-    public function __construct()
+    public function __construct(
+        protected ElasticService $elasticService,
+        protected ArticleSimilarityService $articleSimilarityService,
+        protected ArticleRepositoryInterface $articleRepository,
+    )
     {
-        $this->elasticService = new ElasticService();
-
         $this->articleSimilarity = new ArticleSimilarity();
     }
 
@@ -50,10 +49,10 @@ class ArticleSimilarityService
 
     public function calculateAll(): void
     {
-        Article::chunk(100, function ($articles) {
-            foreach ($articles as $article) {
-                $this->calculate($article);
-            }
-        });
+        $this->articleSimilarity->truncate();
+        $articles = $this->articleRepository->withoutCollections();
+        foreach ($articles as $article) {
+            $this->calculate($article);
+        }
     }
 }

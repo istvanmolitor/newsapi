@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Article;
 use App\Models\Portal;
+use Illuminate\Support\LazyCollection;
 
 interface ArticleRepositoryInterface
 {
@@ -12,4 +13,9 @@ interface ArticleRepositoryInterface
     public function getById(int $id): ?Article;
 
     public function getByUrl(string $url): ?Article;
+
+    /**
+     * Return articles that are not in any collection.
+     */
+    public function withoutCollections(): LazyCollection;
 }

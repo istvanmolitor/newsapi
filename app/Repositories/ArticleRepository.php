@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Article;
 use App\Models\Portal;
+use Illuminate\Support\LazyCollection;
 
 class ArticleRepository implements ArticleRepositoryInterface
 {
@@ -52,5 +53,13 @@ class ArticleRepository implements ArticleRepositoryInterface
             ->orderByDesc('published_at')
             ->limit($limit)
             ->get();
+    }
+
+    public function withoutCollections(): LazyCollection
+    {
+        return $this->article
+            ->whereDoesntHave('collections')
+            ->orderByDesc('published_at')
+            ->cursor();
     }
 }
