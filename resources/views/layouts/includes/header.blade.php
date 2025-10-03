@@ -1,4 +1,4 @@
-<header class="bg-white">
+<header class="bg-blue-900">
     <nav aria-label="Global" class="mx-auto flex items-center justify-between p-6 lg:px-8">
         <div class="flex lg:flex-1">
             <a href="{{ route('article.index') }}" class="-m-1.5 p-1.5">
@@ -7,21 +7,21 @@
             </a>
         </div>
         <div class="hidden lg:flex lg:items-center lg:gap-x-12">
-            <a href="{{ route('article.index') }}" class="text-sm/6 font-semibold text-gray-900">Cikkek</a>
-            <a href="{{ route('keyword.index') }}" class="text-sm/6 font-semibold text-gray-900">Kulcsszavak</a>
-            <a href="{{ route('calendar.index') }}" class="text-sm/6 font-semibold text-gray-900">Naptár</a>
-            <a href="{{ route('portal.index') }}" class="text-sm/6 font-semibold text-gray-900">Portálok</a>
-            <a href="{{ route('similarity.index') }}" class="text-sm/6 font-semibold text-gray-900">Hasonlóságok</a>
-            <a href="{{ route('collection.index') }}" class="text-sm/6 font-semibold text-gray-900">Gyűjtemények</a>
+            <a href="{{ route('article.index') }}" class="text-sm/6 font-semibold text-white hover:underline">Cikkek</a>
+            <a href="{{ route('keyword.index') }}" class="text-sm/6 font-semibold text-white hover:underline">Kulcsszavak</a>
+            <a href="{{ route('calendar.index') }}" class="text-sm/6 font-semibold text-white hover:underline">Naptár</a>
+            <a href="{{ route('portal.index') }}" class="text-sm/6 font-semibold text-white hover:underline">Portálok</a>
+            <a href="{{ route('similarity.index') }}" class="text-sm/6 font-semibold text-white hover:underline">Hasonlóságok</a>
+            <a href="{{ route('collection.index') }}" class="text-sm/6 font-semibold text-white hover:underline">Gyűjtemények</a>
         </div>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-4">
             <form action="{{ route('search.index') }}" method="get" class="relative w-72">
-                <input type="text" name="q" value="{{ request('q') }}" placeholder="Keresés..." class="w-full border rounded-md pl-3 pr-10 py-2" />
-                <button type="submit" class="absolute right-1 top-1/2 -translate-y-1/2 px-2 py-1 text-sm text-white bg-blue-600 rounded">OK</button>
+                <input type="text" name="q" value="{{ request('q') }}" placeholder="Keresés..." class="w-full bg-white border rounded-md pl-3 pr-10 py-2" />
+                <button type="submit" class="absolute right-1 top-1/2 -translate-y-1/2 px-2 py-1 text-sm text-white bg-blue-950 rounded">OK</button>
             </form>
         </div>
         <div class="flex lg:hidden">
-            <button type="button" command="show-modal" commandfor="mobile-menu" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+            <button type="button" command="show-modal" commandfor="mobile-menu" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white">
                 <span class="sr-only">Open main menu</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6">
                     <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round" />
