@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\ArticleContentElementType;
 use App\Models\Article;
 use Elasticsearch\ClientBuilder;
 
@@ -62,6 +63,10 @@ class ElasticService
                             'type' => 'text',
                             'analyzer' => 'hungarian_analyzer'
                         ],
+                        'content' => [
+                            'type' => 'text',
+                            'analyzer' => 'hungarian_analyzer'
+                        ],
                     ]
                 ]
             ]
@@ -75,6 +80,24 @@ class ElasticService
         ]);
     }
 
+    public function getContentByArticle(Article $article): string
+    {
+        $types = [
+            ArticleContentElementType::Paragraph,
+            ArticleContentElementType::Quote,
+            ArticleContentElementType::Heading
+        ];
+
+        $content = [];
+        foreach ($article->articleContentElements as $articleContentElement) {
+            $type = $articleContentElement->type;
+            if(in_array($type, $types)) {
+                $content[] = $articleContentElement->content;
+            }
+        }
+        return implode(' ', $content);
+    }
+
     public function indexArticle(Article $article)
     {
         return $this->client->index([
@@ -83,6 +106,7 @@ class ElasticService
             'body'  => [
                 'title'   => $article->title,
                 'lead' => $article->lead,
+                'content' => $this->getContentByArticle($article),
             ],
         ]);
     }
