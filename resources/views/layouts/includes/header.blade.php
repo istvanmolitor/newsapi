@@ -12,6 +12,7 @@
             <a href="{{ route('calendar.index') }}" class="text-sm/6 font-semibold text-gray-900">Naptár</a>
             <a href="{{ route('portal.index') }}" class="text-sm/6 font-semibold text-gray-900">Portálok</a>
             <a href="{{ route('similarity.index') }}" class="text-sm/6 font-semibold text-gray-900">Hasonlóságok</a>
+            <a href="{{ route('collection.index') }}" class="text-sm/6 font-semibold text-gray-900">Gyűjtemények</a>
         </div>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-4">
             <form action="{{ route('article.search') }}" method="get" class="relative w-72">
@@ -52,6 +53,7 @@
                                 <a href="{{ route('calendar.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Naptár</a>
                                 <a href="{{ route('portal.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Portálok</a>
                                 <a href="{{ route('similarity.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Hasonlóságok</a>
+                                <a href="{{ route('collection.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Gyűjtemények</a>
                             </div>
                             <div class="py-6">
                                 <form action="{{ route('article.search') }}" method="get" class="flex gap-2">

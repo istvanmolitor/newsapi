@@ -5,6 +5,7 @@ use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\PortalController;
 use App\Http\Controllers\ArticleSimilarityController;
+use App\Http\Controllers\ArticleCollectionController;
 use Illuminate\Support\Facades\Route;
 
 // Cikkek listázása
@@ -15,6 +16,11 @@ Route::get('keyword/{keyword}', [KeywordController::class, 'show'])->name('keywo
 
 // Hasonlóságok
 Route::get('similarities', [ArticleSimilarityController::class, 'index'])->name('similarity.index');
+
+// Gyűjtemények
+Route::get('collections', [ArticleCollectionController::class, 'index'])->name('collection.index');
+Route::get('collections/{collection}', [ArticleCollectionController::class, 'show'])->name('collection.show');
+Route::post('collections/collect-pair', [ArticleCollectionController::class, 'collectPair'])->name('collection.collect-pair');
 
 // Portálok
 Route::get('portals', [PortalController::class, 'index'])->name('portal.index');

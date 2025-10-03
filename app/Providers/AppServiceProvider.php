@@ -10,6 +10,8 @@ use App\Repositories\PortalRepository;
 use App\Repositories\PortalRepositoryInterface;
 use App\Repositories\KeywordRepositoryInterface;
 use App\Repositories\KeywordRepository;
+use App\Repositories\ArticleCollectionRepositoryInterface;
+use App\Repositories\ArticleCollectionRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ArticleRepositoryInterface::class, ArticleRepository::class);
         $this->app->bind(ArticleContentElementRepositoryInterface::class, ArticleContentElementRepository::class);
         $this->app->bind(KeywordRepositoryInterface::class, KeywordRepository::class);
+        $this->app->bind(ArticleCollectionRepositoryInterface::class, ArticleCollectionRepository::class);
     }
 
     /**
