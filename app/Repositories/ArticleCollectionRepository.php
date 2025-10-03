@@ -13,7 +13,7 @@ class ArticleCollectionRepository implements ArticleCollectionRepositoryInterfac
 
     public function paginate(int $perPage = 15): LengthAwarePaginator
     {
-        return $this->model->orderByDesc('created_at')->paginate($perPage);
+        return $this->model->withCount('articles')->orderByDesc('created_at')->paginate($perPage);
     }
 
     public function all(): iterable
