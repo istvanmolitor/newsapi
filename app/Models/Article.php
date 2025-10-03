@@ -36,6 +36,17 @@ class Article extends Model
         return $this->belongsToMany(Keyword::class, 'article_keyword');
     }
 
+    // Similarity relations
+    public function similaritiesAsFirst()
+    {
+        return $this->hasMany(ArticleSimilarity::class, 'article_id_1');
+    }
+
+    public function similaritiesAsSecond()
+    {
+        return $this->hasMany(ArticleSimilarity::class, 'article_id_2');
+    }
+
     public function __toString()
     {
         return $this->url;
