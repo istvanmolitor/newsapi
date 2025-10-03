@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\ArticleSubmitController;
 use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\PortalController;
@@ -33,11 +34,10 @@ Route::get('calendar/day/{date}', [CalendarController::class, 'day'])
     ->where('date', '\\d{4}-\\d{2}-\\d{2}')
     ->name('calendar.day');
 
-//Route::middleware(['auth', 'verified'])->group(function () {
-/*Route::get('dashboard', function () {
-    return Inertia::render('dashboard');
-})->name('dashboard');
-*/
+// Hír beküldése (űrlap + feldolgozás)
+Route::get('article-submit', [ArticleSubmitController::class, 'index'])->name('article_submit.index');
+Route::post('article-submit', [ArticleSubmitController::class, 'submit'])->name('article_submit.submit');
+
 Route::get('article/{article}', [ArticleController::class, 'show'])->name('article.show');
 Route::get('article/{article}/scrape', [ArticleController::class, 'scrape'])->name('article.scrape');
 //});

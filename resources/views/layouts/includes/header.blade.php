@@ -13,6 +13,7 @@
             <a href="{{ route('portal.index') }}" class="text-sm/6 font-semibold text-white hover:underline">Portálok</a>
             <a href="{{ route('similarity.index') }}" class="text-sm/6 font-semibold text-white hover:underline">Hasonlóságok</a>
             <a href="{{ route('collection.index') }}" class="text-sm/6 font-semibold text-white hover:underline">Gyűjtemények</a>
+            <a href="{{ route('article_submit.index') }}" class="text-sm/6 font-semibold text-white hover:underline">Hír beküldése</a>
         </div>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-4">
             <form action="{{ route('search.index') }}" method="get" class="relative w-72">
@@ -54,6 +55,7 @@
                                 <a href="{{ route('portal.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Portálok</a>
                                 <a href="{{ route('similarity.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Hasonlóságok</a>
                                 <a href="{{ route('collection.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Gyűjtemények</a>
+                                <a href="{{ route('article_submit.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Hír beküldése</a>
                             </div>
                             <div class="py-6">
                                 <form action="{{ route('search.index') }}" method="get" class="flex gap-2">

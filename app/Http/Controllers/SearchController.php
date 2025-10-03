@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\KeywordRepositoryInterface;
-use App\Services\ElasticService;
+use App\Services\ElasticArticleService;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {
-    public function index(Request $request, ElasticService $elasticService, KeywordRepositoryInterface $keywordRepository)
+    public function index(Request $request, ElasticArticleService $elasticService, KeywordRepositoryInterface $keywordRepository)
     {
         $q = trim((string) $request->input('q', ''));
 

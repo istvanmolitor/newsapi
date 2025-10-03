@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Services\ElasticService;
+use App\Services\ElasticArticleService;
 use Illuminate\Console\Command;
 
 class ArticleReindexCommand extends Command
@@ -26,8 +26,8 @@ class ArticleReindexCommand extends Command
      */
     public function handle()
     {
-        /** @var ElasticService $service */
-        app(ElasticService::class)->reindexAllArticles();
+        /** @var ElasticArticleService $service */
+        app(ElasticArticleService::class)->reindexAllArticles();
         $this->info('Article reindexed');
     }
 }

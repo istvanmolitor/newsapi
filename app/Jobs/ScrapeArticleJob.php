@@ -3,6 +3,8 @@
 namespace App\Jobs;
 
 use App\Services\ArticleService;
+use App\Services\ArticleSimilarityService;
+use App\Services\ElasticArticleService;
 use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -28,15 +30,12 @@ class ScrapeArticleJob implements ShouldQueue
     {
         /** @var ArticleService $articleService */
         $articleService = app(ArticleService::class);
+        $elasticService = app(ElasticArticleService::class);
+        $similarityService = app(ArticleSimilarityService::class);
 
-        try {
-            $articleService->scrapeById($this->articleId);
-            $articleService->saveToElastic();
-        }
-        catch (Exception $e) {
-            Log::warning('ScrapeArticleJob failed for article '.$this->articleId.': '.$e->getMessage());
-            // rethrow to allow retry handling
-            throw $e;
-        }
+        $article = $articleService->scrapeById($this->articleId);
+        $elasticService->indexArticle($article);
+        $similarityService->calculate($article);
+
     }
 }

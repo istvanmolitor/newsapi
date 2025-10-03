@@ -4,24 +4,24 @@ namespace App\Console\Commands;
 
 use App\Models\Article;
 use App\Services\ArticleSimilarityService;
-use App\Services\ElasticService;
+use App\Services\ElasticArticleService;
 use Illuminate\Console\Command;
 
-class TestCommand extends Command
+class SimilarityCalculateCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'teszt';
+    protected $signature = 'similarity:calculate';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Teszt';
+    protected $description = 'Calculate similarity for all articles';
 
     /**
      * Execute the console command.

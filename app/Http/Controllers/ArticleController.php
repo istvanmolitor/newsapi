@@ -6,7 +6,8 @@ use App\Jobs\ScrapeArticleJob;
 use App\Models\Article;
 use App\Repositories\ArticleRepository;
 use App\Services\ArticleService;
-use App\Services\ElasticService;
+use App\Services\ArticleSimilarityService;
+use App\Services\ElasticArticleService;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -28,29 +29,18 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function scrape(Article $article)
+    public function scrape(Article $article, ArticleService $articleService)
     {
-        $articleService = app(ArticleService::class);
-        $articleService->selectArticle($article);
-        try {
-            $articleService->scrapeArticle();
-            $article = Article::find($article->id);
-        }
-        catch(Exception $e) {}
+        $articleService->dispatchScraping($article);
         return redirect()->route('article.show', $article);
     }
 
     public function show(Article $article, Request $request, ArticleRepository $articleRepository)
     {
-        if($article->scraped_at === null) {
-            return redirect()->route('article.scrape', $article);
-        }
-
-        // Eager-load keywords with articles_count and sort them by count desc
         $article->load(['keywords' => function($q) {
             $q->withCount('articles');
         }]);
-        // Sort in-memory to preserve descending order by articles_count, then by keyword as tiebreaker
+
         $article->setRelation('keywords', $article->keywords->sortByDesc('articles_count')->values());
 
         $recommendedArticles = $articleRepository->articlesInSameCollections($article, 3);

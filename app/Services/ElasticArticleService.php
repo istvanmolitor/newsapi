@@ -6,7 +6,7 @@ use App\Enums\ArticleContentElementType;
 use App\Models\Article;
 use Elasticsearch\ClientBuilder;
 
-class ElasticService
+class ElasticArticleService
 {
     protected $index;
 
@@ -98,7 +98,7 @@ class ElasticService
         return implode(' ', $content);
     }
 
-    public function indexArticle(Article $article)
+    public function indexArticle(Article $article): array
     {
         return $this->client->index([
             'index' => $this->index,

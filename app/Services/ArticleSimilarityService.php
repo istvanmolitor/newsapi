@@ -9,8 +9,8 @@ use App\Repositories\ArticleRepositoryInterface;
 class ArticleSimilarityService
 {
     public function __construct(
-        protected ElasticService $elasticService,
-        protected ArticleSimilarityService $articleSimilarityService,
+        protected ElasticArticleService      $elasticService,
+        protected ArticleSimilarityService   $articleSimilarityService,
         protected ArticleRepositoryInterface $articleRepository,
     )
     {

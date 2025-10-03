@@ -11,6 +11,7 @@ use App\Repositories\ArticleContentElementRepositoryInterface;
 use App\Repositories\ArticleRepositoryInterface;
 
 use Exception;
+use Molitor\ArticleParser\Article\Article as ArticleData;
 use Molitor\ArticleParser\Article\ArticleContentElement;
 
 use App\Models\Article;
@@ -26,189 +27,242 @@ use Molitor\ArticleParser\Article\QuoteArticleContentElement;
 use Molitor\ArticleParser\Article\QuoteContentElement;
 use Molitor\ArticleParser\Article\VideoArticleContentElement;
 use Molitor\ArticleParser\Services\ArticleParserService;
-use Illuminate\Support\Facades\Http;
 
 class ArticleService
 {
-    private ?Portal $portal = null;
-
-    private ?Article $article = null;
-
     public function __construct(
         private ArticleParserService $articleParserService,
         private PortalRepositoryInterface $portalRepository,
         private ArticleRepositoryInterface $articleRepository,
         private ArticleContentElementRepositoryInterface $articleContentElementRepository,
         private KeywordRepositoryInterface $keywordRepository,
-        private ElasticService $elasticService
     )
     {
     }
 
-    private function urlToDomain(string $url): string
+    private function urlToDomain(string $url): string|null
     {
-        return parse_url($url, PHP_URL_SCHEME) . '://' . parse_url($url, PHP_URL_HOST);
-    }
-
-    public function selectById(int $articleId): void
-    {
-        $article = $this->articleRepository->getById($articleId);
-        if(!$article) {
-            throw new Exception('Article is not found');
+        $scheme = parse_url($url, PHP_URL_SCHEME);
+        $host = parse_url($url, PHP_URL_HOST);
+        if(!$scheme || !$host) {
+            return null;
         }
-        $this->selectArticle($article);
+        return $scheme . '://' . $host;
     }
 
-    public function selectPortalByName(string $name): void
+    public function getArticleById(int $articleId): Article|null
     {
-        $portalModel = $this->portalRepository->getByName($name);
-        if(!$portalModel) {
-            throw new Exception('No portal with name: ' . $name);
-        }
-        $this->portal = $portalModel;
+        return $this->articleRepository->getById($articleId);
     }
 
-    public function selectPortalByUrl(string $url): void
+    public function getPortalByName(string $name): Portal|null
+    {
+        return $this->portalRepository->getByName($name);
+    }
+
+    public function getPortalByUrl(string $url): Portal|null
     {
         $domain = $this->urlToDomain($url);
-        $portalModel = $this->portalRepository->getByDomain($domain);
-        if(!$portalModel) {
-            throw new Exception('No portal found: ' . $domain);
+        if(!$domain) {
+            return null;
         }
-        $this->portal = $portalModel;
+        return $this->portalRepository->getByDomain($domain);
     }
 
-    public function createPortalByUrl(string $url): void
+    public function createPortal(string $name, string $domain): Portal
+    {
+        return $this->portalRepository->create($name, $domain);
+    }
+
+    public function createPortalByUrl(string $url): Portal|null
     {
         $domain = $this->urlToDomain($url);
-        $this->portal = $this->portalRepository->create(parse_url($url, PHP_URL_HOST), $domain);
-    }
-
-    public function selectArticle(Article $article): void
-    {
-        $this->portal = $article->portal;
-        $this->article = $article;
-    }
-
-    public function selectArticleByUrl(string $url): void
-    {
-        $article = $this->articleRepository->getByUrl($url);
-        if(!$article) {
-            throw new Exception('The article url is not found');
+        if(!$domain) {
+            return null;
         }
-        $this->selectArticle($article);
+        return $this->portalRepository->create(parse_url($url, PHP_URL_HOST), $domain);
     }
 
-    public function save(
+    public function getArticleByUrl(string $url): Article|null
+    {
+        return $this->articleRepository->getByUrl($url);
+    }
+
+    public function updateListImage(Article $article): bool
+    {
+        $mainImageSrc = $article->main_image_src;
+        if($mainImageSrc) {
+            $article->list_image_src = $mainImageSrc;
+            if($article->save()) {
+                return true;
+            }
+        }
+
+        $firstImage = $this->articleContentElementRepository->getFirstImage($article);
+        if($firstImage) {
+            $content = $firstImage->getContent();
+            if(isset($content['src'])) {
+                $article->list_image_src = $content['src'];
+                if($article->save()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    protected function makeArticle(string $url): Article|null
+    {
+        $portal = $this->getPortalByUrl($url);
+        if(!$portal) {
+            $portal = $this->createPortalByUrl($url);
+            if(!$portal) {
+                return null;
+            }
+        }
+        return new Article([
+            'portal_id' => $portal->id,
+            'url' => $url,
+            'hash' => md5($url),
+        ]);
+    }
+
+    public function saveArticle(
         string $url,
         string $title,
         string $lead,
         string|null $image,
         string $publishedAt
-    ): void
+    ): Article|null
     {
-        $data = [
+        $article = $this->getArticleByUrl($url);
+        if(!$article) {
+            $article = $this->makeArticle($url);
+        }
+
+        $article->fill([
             'title' => $title,
             'lead' => $lead,
             'main_image_src' => $image,
             'published_at' => $publishedAt,
-        ];
-
-        try {
-            $this->selectArticleByUrl($url);
-            $this->article->fill($data);
-            $this->article->save();
-        }
-        catch (Exception $e) {
-            if($this->portal === null) {
-                throw new Exception('The portal is not selected.');
-            }
-            $this->article = $this->articleRepository->create($this->portal, $url, $data);
+        ]);
+        if(!$article->save()) {
+            return null;
         }
 
-        $this->saveListImage();
+        $this->updateListImage($article);
+
+        return $article;
     }
 
-    public function startScraping(): bool
+    public function createArticle(
+        string $url,
+        string $title,
+        string $lead,
+        string|null $image,
+        string $publishedAt
+    )
     {
-        if($this->article === null) {
-            throw new Exception('The article is not selected.');
+        $portal = $this->getPortalByUrl($url);
+        if(!$portal) {
+            $portal = $this->createPortal('Unknown', $this->urlToDomain($url));
         }
-        if($this->article->scraped_at === null) {
-            ScrapeArticleJob::dispatch($this->article->id);
+
+        $article = $this->articleRepository->create($portal, $url, [
+            'title' => $title,
+            'lead' => $lead,
+            'main_image_src' => $image,
+            'published_at' => $publishedAt,
+        ]);
+
+        $this->updateListImage($article);
+
+        return $article;
+    }
+
+    public function dispatchScraping(Article $article): bool
+    {
+        if($article->scraped_at === null) {
+            ScrapeArticleJob::dispatch($article->id);
             return true;
         }
         return false;
     }
 
-    public function saveListImage(): void
+    public function scrapeById(int $articleId): Article|null
     {
-        if($this->article === null) {
-            throw new Exception('The article is not selected.');
+        $article = $this->getArticleById($articleId);
+        if(!$article) {
+            return null;
         }
-
-        $mainImageSrc = $this->article->main_image_src;
-        if($mainImageSrc) {
-            $this->article->list_image_src = $mainImageSrc;
-            $this->article->save();
-        }
-
-        $firstImage = $this->articleContentElementRepository->getFirstImage($this->article);
-        if($firstImage) {
-            $content = $firstImage->getContent();
-            if(isset($content['src'])) {
-                $this->article->list_image_src = $content['src'];
-                $this->article->save();
-            }
-        }
+        $this->scrapeArticle($article);
+        return $article;
     }
 
-    public function scrapeById(int $articleId): void
+    public function scrapeByUrl(string $url): Article|null
     {
-        $this->selectById($articleId);
-        $this->scrapeArticle();
-    }
-
-    public function scrapeByUrl(string $url): void
-    {
-        $this->selectArticleByUrl($url);
-        $this->scrapeArticle();
-    }
-
-    public function scrapeArticle(): bool
-    {
-        if($this->article === null) {
-            throw new Exception('Cannot scrape article. Article is not selected');
+        $particleData = $this->getArticleDataByUrl($url);
+        if(!$particleData) {
+            return null;
         }
 
-        $articleObject = $this->articleParserService->getByUrl($this->article->url);
-
-        if(!$articleObject) {
-            $this->article->scraped_at = now();
-            $this->article->save();
-            throw new Exception('Canant scrape article. Remote article is not valid. : ' . $this->article->url);
+        $article = $this->getArticleByUrl($url);
+        if(!$article) {
+            $article = $this->makeArticle($url);
         }
 
-        $mainImage = $articleObject->getMainImage();
+        if($this->saveArticleData($article, $particleData)) {
+            return $article;
+        }
+        return null;
+    }
 
-        $this->article->fill([
-            'title' => $articleObject->getTitle(),
-            'lead' => $articleObject->getLead(),
-            'author' => implode(',', $articleObject->getAuthors()),
+    public function getArticleDataByUrl(string $url): ArticleData|null
+    {
+        return $this->articleParserService->getByUrl($url);
+    }
+
+    public function scrapeArticle(Article $article): bool
+    {
+        $url = $article->url;
+        if(empty($url)) {
+            return false;
+        }
+
+        $articleData = $this->getArticleDataByUrl($url);
+        if(!$articleData) {
+            return false;
+        }
+
+        return $this->saveArticleData($article, $articleData);
+    }
+
+    protected function saveArticleData(Article $article, ArticleData $articleData): bool
+    {
+        $mainImage = $articleData->getMainImage();
+
+        $article->fill([
+            'hash' => md5($article->url),
+            'title' => $articleData->getTitle(),
+            'lead' => $articleData->getLead(),
+            'author' => implode(',', $articleData->getAuthors()),
             'main_image_src' => $mainImage?->getSrc(),
             'main_image_alt' => $mainImage?->getAlt(),
             'main_image_author' => $mainImage?->getAuthor(),
             'scraped_at' => now(),
-            'published_at' => $articleObject->getCreatedAt(),
+            'published_at' => $articleData->getCreatedAt(),
             'updated_at' => now(),
         ]);
-        $this->article->save();
+        if(!$article->save())
+        {
+            return false;
+        }
 
-        $this->keywordRepository->attachKeywordsToArticle($this->article, $articleObject->getKeywords());
+        $this->keywordRepository->attachKeywordsToArticle($article, $articleData->getKeywords());
 
-        $articleContentElements = $this->article->articleContentElements;
+        $articleContentElements = $article->articleContentElements;
 
-        $content = $articleObject->getContent();
+        $content = $articleData->getContent();
 
         $oldCount = $content->count();
         $newCount = $articleContentElements->count();
@@ -232,7 +286,7 @@ class ArticleService
             elseif ($articleContentElement !== null) {
                 //CREATE
                 $this->articleContentElementRepository->create(
-                    $this->article,
+                    $article,
                     $this->makeType($articleContentElement),
                     $this->makeContentString($articleContentElement)
                 );
@@ -242,7 +296,7 @@ class ArticleService
                 $articleContentElementModel->delete();
             }
         }
-
+        $this->updateListImage($article);
         return true;
     }
 
@@ -294,19 +348,5 @@ class ArticleService
         else {
             return '';
         }
-    }
-
-    public function getArticle(): Article|null
-    {
-        return $this->article;
-    }
-    
-    public function saveToElastic(): void
-    {
-        if ($this->article === null) {
-            throw new Exception('The article is not selected.');
-        }
-
-        $this->elasticService->indexArticle($this->article);
     }
 }
