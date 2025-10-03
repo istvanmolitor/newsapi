@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use App\Models\ArticleCollection;
 use App\Repositories\ArticleCollectionRepositoryInterface;
+use App\Services\ArticleCollectionService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -41,30 +43,17 @@ class ArticleCollectionController extends Controller
     }
 
     // Add two articles (a pair) into a deterministic collection for that pair
-    public function collectPair(Request $request): RedirectResponse
+    public function collectPair(Request $request, ArticleCollectionService $articleCollectionService): RedirectResponse
     {
         $validated = $request->validate([
             'article_id_1' => ['required', 'integer', 'exists:articles,id'],
             'article_id_2' => ['required', 'integer', 'different:article_id_1', 'exists:articles,id'],
         ]);
 
-        $a = (int) $validated['article_id_1'];
-        $b = (int) $validated['article_id_2'];
-        [$minId, $maxId] = [$a, $b];
-        if ($minId > $maxId) {
-            [$minId, $maxId] = [$maxId, $minId];
-        }
+        $article1 = Article::findOrFail((int) $validated['article_id_1']);
+        $article2 = Article::findOrFail((int) $validated['article_id_2']);
 
-        // Deterministic title identifying this pair so we don't create duplicates
-        $title = sprintf('Pár: %d-%d', $minId, $maxId);
-
-        $collection = ArticleCollection::firstOrCreate(
-            ['title' => $title],
-            ['lead' => null, 'is_same' => false]
-        );
-
-        // Attach both articles without creating duplicates
-        $collection->articles()->syncWithoutDetaching([$a, $b]);
+        $articleCollectionService->setSameArticle($article1, $article2);
 
         return redirect()->back()->with('status', 'A cikkpár bekerült a gyűjteménybe.');
     }

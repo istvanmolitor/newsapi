@@ -2,11 +2,13 @@
 
 namespace App\Repositories;
 
+use App\Models\Article;
 use App\Models\ArticleArticleCollection;
+use App\Models\ArticleCollection;
 
 interface ArticleArticleCollectionRepositoryInterface
 {
-    public function attach(int $articleId, int $collectionId): ArticleArticleCollection;
+    public function attach(Article $article, ArticleCollection $articleCollection): ArticleArticleCollection;
 
-    public function detach(int $articleId, int $collectionId): bool;
+    public function detach(Article $article, ArticleCollection $articleCollection): bool;
 }

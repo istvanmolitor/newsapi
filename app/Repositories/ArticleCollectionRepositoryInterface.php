@@ -11,7 +11,9 @@ interface ArticleCollectionRepositoryInterface
 
     public function all(): iterable;
 
-    public function create(array $data): ArticleCollection;
+    public function create(string $title, string $lead, bool $isSame): ArticleCollection;
 
     public function find(int $id): ?ArticleCollection;
+
+    public function delete(ArticleCollection $collection): bool;
 }

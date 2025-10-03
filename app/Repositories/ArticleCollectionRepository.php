@@ -21,13 +21,22 @@ class ArticleCollectionRepository implements ArticleCollectionRepositoryInterfac
         return $this->model->orderByDesc('created_at')->get();
     }
 
-    public function create(array $data): ArticleCollection
+    public function create(string $title, string $lead, bool $isSame): ArticleCollection
     {
-        return $this->model->create($data);
+        return $this->model->create([
+            'title' => $title,
+            'lead' => $lead,
+            'is_same' => $isSame,
+        ]);
     }
 
     public function find(int $id): ?ArticleCollection
     {
         return $this->model->find($id);
+    }
+
+    public function delete(ArticleCollection $collection): bool
+    {
+        return $collection->delete();
     }
 }
