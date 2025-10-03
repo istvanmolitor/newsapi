@@ -20,7 +20,7 @@ Route::get('similarities', [ArticleSimilarityController::class, 'index'])->name(
 // Gyűjtemények
 Route::get('collections', [ArticleCollectionController::class, 'index'])->name('collection.index');
 Route::get('collections/{collection}', [ArticleCollectionController::class, 'show'])->name('collection.show');
-Route::post('collections/collect-pair', [ArticleCollectionController::class, 'collectPair'])->name('collection.collect-pair');
+Route::post('collections/collect-pair/{articleSimilarity}', [ArticleCollectionController::class, 'collectPair'])->name('collection.collect-pair');
 
 // Portálok
 Route::get('portals', [PortalController::class, 'index'])->name('portal.index');

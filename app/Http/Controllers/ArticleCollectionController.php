@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\ArticleCollection;
+use App\Models\ArticleSimilarity;
 use App\Repositories\ArticleCollectionRepositoryInterface;
 use App\Services\ArticleCollectionService;
 use Illuminate\Http\RedirectResponse;
@@ -43,18 +44,10 @@ class ArticleCollectionController extends Controller
     }
 
     // Add two articles (a pair) into a deterministic collection for that pair
-    public function collectPair(Request $request, ArticleCollectionService $articleCollectionService): RedirectResponse
+    public function collectPair(ArticleSimilarity $articleSimilarity, ArticleCollectionService $articleCollectionService): RedirectResponse
     {
-        $validated = $request->validate([
-            'article_id_1' => ['required', 'integer', 'exists:articles,id'],
-            'article_id_2' => ['required', 'integer', 'different:article_id_1', 'exists:articles,id'],
-        ]);
-
-        $article1 = Article::findOrFail((int) $validated['article_id_1']);
-        $article2 = Article::findOrFail((int) $validated['article_id_2']);
-
-        $articleCollectionService->setSameArticle($article1, $article2);
-
+        $articleCollectionService->joinSimilarArticles($articleSimilarity);
+        $articleSimilarity->delete();
         return redirect()->back()->with('status', 'A cikkpár bekerült a gyűjteménybe.');
     }
 }

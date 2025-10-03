@@ -33,10 +33,8 @@
                         <td class="px-4 py-2 font-mono">{{ number_format($row->similarity, 6, '.', ' ') }}</td>
                         <td class="px-4 py-2">{{ optional($row->computed_at)->format('Y-m-d H:i') ?? '-' }}</td>
                         <td class="px-4 py-2">
-                            <form method="POST" action="{{ route('collection.collect-pair') }}">
+                            <form method="POST" action="{{ route('collection.collect-pair', $row) }}">
                                 @csrf
-                                <input type="hidden" name="article_id_1" value="{{ $row->article1->id }}">
-                                <input type="hidden" name="article_id_2" value="{{ $row->article2->id }}">
                                 <button type="submit" class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none">
                                     Hozzáadás gyűjteményhez
                                 </button>
