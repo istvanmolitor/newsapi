@@ -60,3 +60,7 @@
         @endif
     </footer>
 @endsection
+
+@section('sidebar')
+    <x-article-vertical-list :articles="$randomArticles"></x-article-vertical-list>
+@endsection

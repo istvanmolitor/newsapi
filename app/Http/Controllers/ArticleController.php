@@ -60,8 +60,14 @@ class ArticleController extends Controller
         // Sort in-memory to preserve descending order by articles_count, then by keyword as tiebreaker
         $article->setRelation('keywords', $article->keywords->sortByDesc('articles_count')->values());
 
+        $randomArticles = Article::where('id', '!=', $article->id)
+            ->inRandomOrder()
+            ->limit(3)
+            ->get();
+
         return view('article.show', [
-            'article' => $article
+            'article' => $article,
+            'randomArticles' => $randomArticles,
         ]);
     }
 }
