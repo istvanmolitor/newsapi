@@ -30,7 +30,7 @@ class SimilarityCalculateCommand extends Command
     {
         /** @var ArticleSimilarityService $service */
         $service = app(ArticleSimilarityService::class);
-
+        $service->truncate();
         $service->calculateAll();
     }
 }

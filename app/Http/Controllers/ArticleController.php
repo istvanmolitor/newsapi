@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\ScrapeArticleJob;
 use App\Models\Article;
 use App\Repositories\ArticleRepository;
 use App\Services\ArticleService;
 use App\Services\ArticleSimilarityService;
 use App\Services\ElasticArticleService;
-use Exception;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -29,9 +27,11 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function scrape(Article $article, ArticleService $articleService)
+    public function scrape(Article $article, ArticleService $articleService, ElasticArticleService $elasticArticleService)
     {
-        $articleService->dispatchScraping($article);
+        $articleService->scrapeArticle($article);
+        $elasticArticleService->indexArticle($article);
+
         return redirect()->route('article.show', $article);
     }
 

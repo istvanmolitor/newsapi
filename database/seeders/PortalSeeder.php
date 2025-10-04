@@ -25,6 +25,10 @@ class PortalSeeder extends Seeder
                 'name' => '444',
                 'domain' => 'https://444.hu',
             ],
+            [
+                'name' => '.hu',
+                'domain' => 'https://24.hu',
+            ],
         ];
 
         foreach ($portals as $data) {

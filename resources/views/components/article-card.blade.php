@@ -1,4 +1,4 @@
-<article class="bg-card text-card-foreground rounded-lg shadow-sm border border-border overflow-hidden flex flex-col">
+<article class="bg-card text-card-foreground rounded-lg border border-border border-d overflow-hidden flex flex-col border-slate-200 bg-white shadow-sm hover:shadow transition hover:border-slate-300 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100">
     @if(!empty($article->list_image_src))
         <a href="{{ route('article.show', $article) }}" class="block">
             <img src="{{ $article->list_image_src }}" class="w-full h-44 object-cover" loading="lazy" alt="">

@@ -80,4 +80,9 @@ class ArticleSimilarityService
 
         return $articlesOrdered;
     }
+
+    public function truncate(): void
+    {
+        $this->articleSimilarity->truncate();
+    }
 }

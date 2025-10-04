@@ -101,8 +101,8 @@ class ArticleService
         $firstImage = $this->articleContentElementRepository->getFirstImage($article);
         if($firstImage) {
             $content = $firstImage->getContent();
-            if(isset($content['src'])) {
-                $article->list_image_src = $content['src'];
+            if($content && $content->src) {
+                $article->list_image_src = $content->src;
                 if($article->save()) {
                     return true;
                 }
@@ -296,6 +296,7 @@ class ArticleService
                 $articleContentElementModel->delete();
             }
         }
+        
         $this->updateListImage($article);
         return true;
     }
