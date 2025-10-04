@@ -296,7 +296,7 @@ class ArticleService
                 $articleContentElementModel->delete();
             }
         }
-        
+
         $this->updateListImage($article);
         return true;
     }
