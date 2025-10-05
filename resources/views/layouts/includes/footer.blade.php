@@ -9,7 +9,10 @@
                     <a href="{{ route('keyword.index') }}" class="hover:underline me-4 md:me-6 text-white">Kulcsszavak</a>
                 </li>
                 <li>
-                    <a href="{{ route('calendar.index') }}" class="hover:underline text-white">Naptár</a>
+                    <a href="{{ route('calendar.index') }}" class="hover:underline me-4 md:me-6 text-white">Naptár</a>
+                </li>
+                <li>
+                    <a href="{{ route('portal.index') }}" class="hover:underline me-4 md:me-6 text-white">Portálok</a>
                 </li>
             </ul>
         </div>

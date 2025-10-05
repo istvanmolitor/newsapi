@@ -8,10 +8,7 @@
         </div>
         <div class="hidden lg:flex lg:items-center lg:gap-x-12">
             <a href="{{ route('article.index') }}" class="text-sm/6 font-semibold text-white hover:underline">Cikkek</a>
-            <a href="{{ route('keyword.index') }}" class="text-sm/6 font-semibold text-white hover:underline">Kulcsszavak</a>
             <a href="{{ route('calendar.index') }}" class="text-sm/6 font-semibold text-white hover:underline">Naptár</a>
-            <a href="{{ route('portal.index') }}" class="text-sm/6 font-semibold text-white hover:underline">Portálok</a>
-            <a href="{{ route('similarity.index') }}" class="text-sm/6 font-semibold text-white hover:underline">Hasonlóságok</a>
             <a href="{{ route('collection.index') }}" class="text-sm/6 font-semibold text-white hover:underline">Gyűjtemények</a>
             <a href="{{ route('article_submit.index') }}" class="text-sm/6 font-semibold text-white hover:underline">Hír beküldése</a>
         </div>
@@ -50,10 +47,7 @@
                         <div class="-my-6 divide-y divide-gray-500/10">
                             <div class="space-y-2 py-6">
                                 <a href="{{ route('article.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Cikkek</a>
-                                <a href="{{ route('keyword.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Kulcsszavak</a>
                                 <a href="{{ route('calendar.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Naptár</a>
-                                <a href="{{ route('portal.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Portálok</a>
-                                <a href="{{ route('similarity.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Hasonlóságok</a>
                                 <a href="{{ route('collection.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Gyűjtemények</a>
                                 <a href="{{ route('article_submit.index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Hír beküldése</a>
                             </div>
