@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\ArticleCollection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 
 class ArticleCollectionRepository implements ArticleCollectionRepositoryInterface
 {
@@ -38,5 +39,10 @@ class ArticleCollectionRepository implements ArticleCollectionRepositoryInterfac
     public function delete(ArticleCollection $collection): bool
     {
         return $collection->delete();
+    }
+
+    public function getForHomepage(int $limit): Collection
+    {
+        return $this->model->limit($limit)->get();
     }
 }

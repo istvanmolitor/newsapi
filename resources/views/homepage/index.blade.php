@@ -44,6 +44,20 @@
                 </section>
             @endif
 
+                @if($articleCollections)
+                    <section class="mt-10">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-semibold">Gyűjteményekből</h3>
+                            <a href="{{ route('collection.index') }}" class="text-sm text-blue-700 hover:underline">Összes gyűjtemény</a>
+                        </div>
+                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                            @foreach($articleCollections as $articleCollection)
+                                <x-article-collection-card :articleCollection="$articleCollection" />
+                            @endforeach
+                        </div>
+                    </section>
+                @endif
+
             @if($others->count() > 7)
                 <section class="mt-10">
                     <div class="flex items-center justify-between mb-4">

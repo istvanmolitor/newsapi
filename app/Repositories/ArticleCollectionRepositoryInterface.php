@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\ArticleCollection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 
 interface ArticleCollectionRepositoryInterface
 {
@@ -16,4 +17,6 @@ interface ArticleCollectionRepositoryInterface
     public function find(int $id): ?ArticleCollection;
 
     public function delete(ArticleCollection $collection): bool;
+
+    public function getForHomepage(int $limit): Collection;
 }

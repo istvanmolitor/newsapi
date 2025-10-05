@@ -10,5 +10,9 @@
                 {{ $article->title }}
             </a>
         </h2>
+        <div class="mt-3 text-xs text-muted-foreground">
+            <span class="inline-flex items-center gap-1">Portal:</span>
+            <a href="{{ route('portal.show', $article->portal) }}">{{ $article->portal }}</a>
+        </div>
     </div>
 </article>
