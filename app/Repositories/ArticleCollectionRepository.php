@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Article;
 use App\Models\ArticleCollection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
@@ -44,5 +45,14 @@ class ArticleCollectionRepository implements ArticleCollectionRepositoryInterfac
     public function getForHomepage(int $limit): Collection
     {
         return $this->model->limit($limit)->get();
+    }
+
+    public function getSameCollectionByArticle(Article $article): ?ArticleCollection
+    {
+        return $this->model->join('article_article_collection', 'article_article_collection.article_collection_id', '=', 'article_collections.id')
+            ->where('article_article_collection.article_id', $article->id)
+            ->where('article_collections.is_same', true)
+            ->select('article_collections.*')
+            ->first();
     }
 }

@@ -56,6 +56,8 @@
         @endforeach
     </div>
 
+    <x-article-collection-article-pager :article="$article"></x-article-collection-article-pager>
+
     <footer class="mt-8 border-t pt-4 flex items-center justify-between">
         <a href="{{ url()->previous() }}" class="text-sm text-muted-foreground hover:text-foreground">&larr; Vissza</a>
         @if(!empty($article->url))

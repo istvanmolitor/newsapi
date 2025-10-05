@@ -13,13 +13,6 @@
     @endif
 
     <div class="mt-3 text-xs text-muted-foreground flex items-center gap-3">
-                        <span>Azonos tartalom?
-                            @if($articleCollection->is_same)
-                                <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Igen</span>
-                            @else
-                                <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-0.5 text-xs font-medium text-gray-700 ring-1 ring-inset ring-gray-600/20">Nem</span>
-                            @endif
-                        </span>
         <span>Létrehozva: {{ optional($articleCollection->created_at)->format('Y-m-d H:i') }}</span>
     </div>
 

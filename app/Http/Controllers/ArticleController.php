@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Repositories\ArticleCollectionRepositoryInterface;
 use App\Repositories\ArticleRepository;
 use App\Services\ArticleService;
 use App\Services\ArticleSimilarityService;
@@ -35,7 +36,7 @@ class ArticleController extends Controller
         return redirect()->route('article.show', $article);
     }
 
-    public function show(Article $article, Request $request, ArticleRepository $articleRepository)
+    public function show(Article $article, Request $request, ArticleRepository $articleRepository, ArticleCollectionRepositoryInterface $articleCollectionRepository)
     {
         $article->load(['keywords' => function($q) {
             $q->withCount('articles');
@@ -43,13 +44,7 @@ class ArticleController extends Controller
 
         $article->setRelation('keywords', $article->keywords->sortByDesc('articles_count')->values());
 
-        $recommendedArticles = $articleRepository->articlesInSameCollections($article, 3);
-        if($recommendedArticles->isEmpty()) {
-            /** @var ArticleSimilarityService $similarityService */
-            $similarityService = app(ArticleSimilarityService::class);
-            $recommendedArticles = $similarityService->getSimilarArticles($article, 3);
-        }
-
+        $recommendedArticles = $articleRepository->getRecommendedArticles($article, 3);
 
         return view('article.show', [
             'article' => $article,

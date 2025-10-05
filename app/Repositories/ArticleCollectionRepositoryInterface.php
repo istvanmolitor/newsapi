@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Article;
 use App\Models\ArticleCollection;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
@@ -19,4 +20,7 @@ interface ArticleCollectionRepositoryInterface
     public function delete(ArticleCollection $collection): bool;
 
     public function getForHomepage(int $limit): Collection;
+
+    public function getSameCollectionByArticle(Article $article): ?ArticleCollection;
+
 }

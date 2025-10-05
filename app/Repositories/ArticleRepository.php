@@ -60,4 +60,15 @@ class ArticleRepository implements ArticleRepositoryInterface
             ->orderByDesc('published_at')
             ->cursor();
     }
+
+    public function getRecommendedArticles(Article $article, int $limit): Collection
+    {
+        return $this->article
+            ->where('id', '!=', $article->id)
+            ->whereNotNull('published_at')
+            ->inRandomOrder()
+            ->with('portal')
+            ->limit($limit)
+            ->get();
+    }
 }
