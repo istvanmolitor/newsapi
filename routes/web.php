@@ -9,10 +9,12 @@ use App\Http\Controllers\ArticleSimilarityController;
 use App\Http\Controllers\ArticleCollectionController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\HomepageController;
 use Illuminate\Support\Facades\Route;
 
 // Cikkek listázása
-Route::get('/', [ArticleController::class, 'index'])->name('article.index');
+Route::get('/', [HomepageController::class, 'index'])->name('homepage');
+Route::get('article', [ArticleController::class, 'index'])->name('article.index');
 Route::get('search', [SearchController::class, 'index'])->name('search.index');
 Route::get('keywords', [KeywordController::class, 'index'])->name('keyword.index');
 Route::get('keyword/{keyword}', [KeywordController::class, 'show'])->name('keyword.show');

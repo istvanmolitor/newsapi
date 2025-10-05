@@ -1,7 +1,7 @@
 <header class="bg-blue-900">
     <nav aria-label="Global" class="mx-auto flex items-center justify-between p-6 lg:px-8">
         <div class="flex lg:flex-1">
-            <a href="{{ route('article.index') }}" class="-m-1.5 p-1.5">
+            <a href="{{ route('homepage') }}" class="-m-1.5 p-1.5">
                 <span class="sr-only">Főoldal</span>
                 <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600" alt="" class="h-8 w-auto" />
             </a>
@@ -32,7 +32,7 @@
             <div tabindex="0" class="fixed inset-0 focus:outline-none">
                 <el-dialog-panel class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white p-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
                     <div class="flex items-center justify-between">
-                        <a href="{{ route('article.index') }}" class="-m-1.5 p-1.5">
+                        <a href="{{ route('homepage') }}" class="-m-1.5 p-1.5">
                             <span class="sr-only">Főoldal</span>
                             <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600" alt="" class="h-8 w-auto" />
                         </a>
