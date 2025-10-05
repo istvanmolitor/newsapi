@@ -14,4 +14,9 @@ class Keyword extends Model
     {
         return $this->belongsToMany(Article::class, 'article_keyword');
     }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'category_keyword');
+    }
 }

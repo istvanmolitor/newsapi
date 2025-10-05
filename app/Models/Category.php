@@ -11,4 +11,9 @@ class Category extends Model
         'description',
         'order',
     ];
+
+    public function keywords()
+    {
+        return $this->belongsToMany(Keyword::class, 'category_keyword');
+    }
 }

@@ -33,6 +33,13 @@ class CategoryResource extends Resource
                     ->numeric()
                     ->default(0)
                     ->required(),
+                Forms\Components\Select::make('keywords')
+                    ->label('Keywords')
+                    ->relationship('keywords', 'keyword')
+                    ->multiple()
+                    ->preload()
+                    ->searchable()
+                    ->columnSpanFull(),
             ]);
     }
 
