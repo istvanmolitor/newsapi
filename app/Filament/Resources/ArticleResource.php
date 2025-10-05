@@ -59,6 +59,18 @@ class ArticleResource extends Resource
                     ->multiple()
                     ->preload()
                     ->searchable(),
+                Forms\Components\Select::make('keywords')
+                    ->label('Kulcsszavak')
+                    ->relationship('keywords', 'keyword')
+                    ->multiple()
+                    ->preload()
+                    ->searchable()
+                    ->createOptionForm([
+                        Forms\Components\TextInput::make('keyword')
+                            ->label('Kulcsszó')
+                            ->required()
+                            ->maxLength(255),
+                    ]),
             ]);
     }
 
