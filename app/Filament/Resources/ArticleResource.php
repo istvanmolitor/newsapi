@@ -53,6 +53,12 @@ class ArticleResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('main_image_author')
                     ->maxLength(255),
+                Forms\Components\Select::make('collections')
+                    ->label('Gyűjtemények')
+                    ->relationship('collections', 'title')
+                    ->multiple()
+                    ->preload()
+                    ->searchable(),
             ]);
     }
 
